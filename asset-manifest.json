@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Samsprintstudio/static/css/main.a868f1d7.css",
+    "main.js": "/Samsprintstudio/static/js/main.2091dd31.js",
+    "index.html": "/Samsprintstudio/index.html",
+    "main.a868f1d7.css.map": "/Samsprintstudio/static/css/main.a868f1d7.css.map",
+    "main.2091dd31.js.map": "/Samsprintstudio/static/js/main.2091dd31.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a868f1d7.css",
+    "static/js/main.2091dd31.js"
+  ]
+}
