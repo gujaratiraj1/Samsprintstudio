@@ -48,7 +48,7 @@ function HomePage() {
 
 function App() {
   return (
-    <Router basename="/Samsprintstudio">
+    <Router basename={process.env.PUBLIC_URL || ''}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/service/visiting-cards" element={<ServicePage serviceName="visiting-cards" />} />
