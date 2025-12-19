@@ -650,10 +650,10 @@
         <div class="header-content">
             <div class="logo-section">
                 <img src="logo.png" alt="Sam's Print Studio Logo">
-                <!-- <div class="logo-text">
+                <div class="logo-text">
                     <div class="brand-name">Sam's Print</div>
                     <div class="brand-tagline">Studio</div> 
-                </div> -->
+                </div> 
             </div>
             <nav>
                 <a href="#home">Home</a>
@@ -800,6 +800,11 @@
                     <h3>ID Cards & Custom Prints</h3>
                     <p>Corporate, school, and event ID cards. Bulk orders welcome.</p>
                 </div>
+                <div class="card">
+                    <div class="card-icon">📄</div>
+                    <h3>Document Printing</h3>
+                    <p>Upload & print your documents in black & white or color. Fast turnaround, multiple paper options.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -842,6 +847,133 @@
                 </div>
                 <div style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0.5rem; margin-top: 2rem;">
                     <p style="color: #1e40af;"><strong>📌 Note:</strong> Design support is available for all first-time customers. Additional design revisions available at nominal charges for complex projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Document Printing Section -->
+    <section style="background: linear-gradient(135deg, #e0f2fe 0%, #fff 50%, #e0f2fe 100%);">
+        <div class="container">
+            <h2 class="section-title">Document Printing Service</h2>
+            <p class="section-subtitle">Quick & Easy - Upload your document and choose your print options</p>
+            
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div style="background: white; padding: 3rem; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- File Upload Section -->
+                    <div style="margin-bottom: 2.5rem;">
+                        <h3 style="font-weight: bold; color: #111827; margin-bottom: 1rem; font-size: 1.25rem;">📤 Upload Your Document</h3>
+                        <div style="border: 2px dashed #0284c7; border-radius: 0.5rem; padding: 2rem; text-align: center; background: #f0f9ff; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#e0f2fe'" onmouseout="this.style.background='#f0f9ff'">
+                            <input type="file" id="docUpload" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png" style="display: none;">
+                            <div onclick="document.getElementById('docUpload').click()" style="cursor: pointer;">
+                                <p style="font-size: 2.5rem; margin: 0 0 0.5rem 0;">📁</p>
+                                <p style="font-weight: 600; color: #0284c7; margin-bottom: 0.5rem; font-size: 1.125rem;">Click to upload or drag & drop</p>
+                                <p style="color: #6b7280; font-size: 0.875rem;">PDF, Word, Text, or Image files (Max 50MB)</p>
+                            </div>
+                        </div>
+                        <p id="fileName" style="color: #059669; margin-top: 1rem; font-weight: 500; display: none;"></p>
+                    </div>
+
+                    <!-- Print Options -->
+                    <div style="margin-bottom: 2.5rem;">
+                        <h3 style="font-weight: bold; color: #111827; margin-bottom: 1.5rem; font-size: 1.25rem;">🎨 Select Print Type</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            
+                            <!-- Black & White Option -->
+                            <div style="border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" id="bwOption" onclick="selectPrintType('bw', this)">
+                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                    <input type="radio" name="printType" value="bw" style="width: 1.25rem; height: 1.25rem; cursor: pointer;">
+                                    <h4 style="font-weight: 700; color: #111827; margin: 0;">Black & White</h4>
+                                </div>
+                                <p style="color: #6b7280; margin-bottom: 1rem;">Perfect for documents, reports, and text-heavy materials.</p>
+                                <div style="display: grid; gap: 0.75rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280;">A4 Single Side</span>
+                                        <span style="font-weight: 700; color: #0284c7;">₹1/page</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280;">A4 Double Side</span>
+                                        <span style="font-weight: 700; color: #0284c7;">₹0.75/page</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280;">A3 Single Side</span>
+                                        <span style="font-weight: 700; color: #0284c7;">₹2/page</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Color Option -->
+                            <div style="border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" id="colorOption" onclick="selectPrintType('color', this)">
+                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                    <input type="radio" name="printType" value="color" style="width: 1.25rem; height: 1.25rem; cursor: pointer;">
+                                    <h4 style="font-weight: 700; color: #111827; margin: 0;">Color Print</h4>
+                                </div>
+                                <p style="color: #6b7280; margin-bottom: 1rem;">Vibrant colors for presentations, photos, and marketing materials.</p>
+                                <div style="display: grid; gap: 0.75rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280;">A4 Single Side</span>
+                                        <span style="font-weight: 700; color: #059669;">₹5/page</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280;">A4 Double Side</span>
+                                        <span style="font-weight: 700; color: #059669;">₹4.5/page</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280;">A3 Single Side</span>
+                                        <span style="font-weight: 700; color: #059669;">₹10/page</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity & Binding Options -->
+                    <div style="margin-bottom: 2.5rem;">
+                        <h3 style="font-weight: bold; color: #111827; margin-bottom: 1rem; font-size: 1.125rem;">📊 Additional Options</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Number of Copies</label>
+                                <input type="number" min="1" value="1" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Paper Quality</label>
+                                <select style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem;">
+                                    <option>Standard (70gsm)</option>
+                                    <option>Premium (90gsm)</option>
+                                    <option>Glossy</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Binding</label>
+                                <select style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem;">
+                                    <option>No Binding</option>
+                                    <option>Staple (+₹10)</option>
+                                    <option>Spiral Binding (+₹50)</option>
+                                    <option>Comb Binding (+₹40)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                        <h4 style="font-weight: bold; color: #111827; margin-bottom: 1rem;">✨ Why Choose Our Document Printing?</h4>
+                        <div style="display: grid; gap: 0.75rem;">
+                            <p style="display: flex; gap: 0.75rem; color: #4b5563; margin: 0;"><span style="color: #22c55e; font-weight: bold;">✓</span> <span>Fast turnaround - Ready in 24 hours</span></p>
+                            <p style="display: flex; gap: 0.75rem; color: #4b5563; margin: 0;"><span style="color: #22c55e; font-weight: bold;">✓</span> <span>High-quality output with professional finish</span></p>
+                            <p style="display: flex; gap: 0.75rem; color: #4b5563; margin: 0;"><span style="color: #22c55e; font-weight: bold;">✓</span> <span>Free delivery on orders above ₹500</span></p>
+                            <p style="display: flex; gap: 0.75rem; color: #4b5563; margin: 0;"><span style="color: #22c55e; font-weight: bold;">✓</span> <span>Bulk discounts available</span></p>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div style="text-align: center;">
+                        <a href="https://wa.me/919999999999?text=Hi%20Sam%27s%20Print%20Studio%2C%20I%20want%20to%20print%20my%20documents" target="_blank" class="btn-primary" style="display: inline-block; padding: 1rem 2.5rem; background: #0284c7; color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; font-size: 1.125rem;">
+                            📱 Proceed to WhatsApp
+                        </a>
+                        <p style="color: #6b7280; margin-top: 1rem; font-size: 0.875rem;">Share your document and preferences via WhatsApp to get a quote</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1115,7 +1247,10 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h4>Sam's Print Studio</h4>
+                       
+                            <img src="./public/logo.png" alt="Sam's Print Studio Logo" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 0.5rem;">
+                       
+                        <h4><span style="color: #22c55e;">Sam's</span> <span style="color: #ffffff;">Print Studio</span></h4>
                     <p style="color: #9ca3af; margin-bottom: 1rem;">Professional printing solutions for Bangalore. Fast, quality, affordable.</p>
                     <div style="display: flex; gap: 1rem;">
                         <a href="#" style="width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); border-radius: 50%; color: #9ca3af;">f</a>
@@ -1193,6 +1328,49 @@
         document.querySelectorAll('.card, .step, .stat, .pricing-table').forEach(el => {
             observer.observe(el);
         });
+
+        // Document Upload Handler
+        const docUpload = document.getElementById('docUpload');
+        docUpload.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) {
+                document.getElementById('fileName').textContent = '✓ File selected: ' + fileName;
+                document.getElementById('fileName').style.display = 'block';
+            }
+        });
+
+        // Print Type Selection Handler
+        function selectPrintType(type, element) {
+            document.querySelectorAll('[id="bwOption"], [id="colorOption"]').forEach(el => {
+                el.style.borderColor = '#e5e7eb';
+                el.style.background = 'white';
+            });
+            element.style.borderColor = type === 'bw' ? '#0284c7' : '#059669';
+            element.style.background = type === 'bw' ? '#eff6ff' : '#f0fdf4';
+            element.querySelector('input[type="radio"]').checked = true;
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.querySelector('[style*="border: 2px dashed"]');
+        if (uploadArea) {
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.background = '#e0f2fe';
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.background = '#f0f9ff';
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    docUpload.files = files;
+                    const fileName = files[0].name;
+                    document.getElementById('fileName').textContent = '✓ File selected: ' + fileName;
+                    document.getElementById('fileName').style.display = 'block';
+                }
+            });
+        }
     </script>
 </body>
 </html>
