@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Layers, BookOpen, Tag, Flag, Mail, Fingerprint } from 'lucide-react';
 
 const ServicesSection = () => {
@@ -6,12 +7,14 @@ const ServicesSection = () => {
     {
       icon: <Layers className="w-12 h-12 text-green-600" />,
       title: 'Visiting Cards',
-      description: 'Premium matte, glossy, textured & laminated cards with custom designs.'
+      description: 'Premium matte, glossy, textured & laminated cards with custom designs.',
+      link: '/service/visiting-cards'
     },
     {
       icon: <BookOpen className="w-12 h-12 text-blue-600" />,
       title: 'Flyers & Brochures',
-      description: 'High-impact marketing prints for promotions, events, and campaigns.'
+      description: 'High-impact marketing prints for promotions, events, and campaigns.',
+      link: '/service/flyers'
     },
     {
       icon: <Tag className="w-12 h-12 text-orange-600" />,
@@ -21,7 +24,8 @@ const ServicesSection = () => {
     {
       icon: <Flag className="w-12 h-12 text-red-600" />,
       title: 'Banners & Flex',
-      description: 'Indoor & outdoor banners with fast delivery. Flexible design options.'
+      description: 'Indoor & outdoor banners with fast delivery. Flexible design options.',
+      link: '/service/banners'
     },
     {
       icon: <Mail className="w-12 h-12 text-purple-600" />,
@@ -55,10 +59,17 @@ const ServicesSection = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
               <p className="text-gray-600 leading-relaxed">{service.description}</p>
-              <button className="mt-6 text-green-600 font-semibold hover:text-green-700 flex items-center group">
-                Learn more
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </button>
+              {service.link ? (
+                <Link to={service.link} className="mt-6 text-green-600 font-semibold hover:text-green-700 flex items-center group">
+                  View Designs
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </Link>
+              ) : (
+                <button className="mt-6 text-green-600 font-semibold hover:text-green-700 flex items-center group">
+                  Learn more
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+              )}
             </div>
           ))}
         </div>

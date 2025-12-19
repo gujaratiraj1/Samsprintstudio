@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import WhyChooseUs from './components/WhyChooseUs';
@@ -8,8 +9,9 @@ import PricingSection from './components/PricingSection';
 import HowToOrderSection from './components/HowToOrderSection';
 import AboutUsSection from './components/AboutUsSection';
 import Footer from './components/Footer';
+import ServicePage from './components/ServicePage';
 
-function App() {
+function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -38,6 +40,19 @@ function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router basename={process.env.NODE_ENV === 'production' ? '/Samsprintstudio' : ''}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/service/visiting-cards" element={<ServicePage serviceName="visiting-cards" />} />
+        <Route path="/service/flyers" element={<ServicePage serviceName="flyers" />} />
+        <Route path="/service/banners" element={<ServicePage serviceName="banners" />} />
+      </Routes>
+    </Router>
   );
 }
 
