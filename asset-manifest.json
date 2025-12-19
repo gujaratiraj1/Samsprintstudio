@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Samsprintstudio/static/css/main.4ca3895e.css",
-    "main.js": "/Samsprintstudio/static/js/main.5cb6e4b6.js",
+    "main.css": "/Samsprintstudio/static/css/main.866d26d0.css",
+    "main.js": "/Samsprintstudio/static/js/main.ff976bd8.js",
     "index.html": "/Samsprintstudio/index.html",
-    "main.4ca3895e.css.map": "/Samsprintstudio/static/css/main.4ca3895e.css.map",
-    "main.5cb6e4b6.js.map": "/Samsprintstudio/static/js/main.5cb6e4b6.js.map"
+    "main.866d26d0.css.map": "/Samsprintstudio/static/css/main.866d26d0.css.map",
+    "main.ff976bd8.js.map": "/Samsprintstudio/static/js/main.ff976bd8.js.map"
   },
   "entrypoints": [
-    "static/css/main.4ca3895e.css",
-    "static/js/main.5cb6e4b6.js"
+    "static/css/main.866d26d0.css",
+    "static/js/main.ff976bd8.js"
   ]
 }
