@@ -37,12 +37,8 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
-            <img src="/logo.png" alt="Sam's Print Studio" className="w-24 h-24 md:w-32 md:h-32 object-contain" />
-            <div className="hidden sm:block">
-              <p className="text-lg font-bold text-gray-900">Sam's Print</p>
-              <p className="text-sm text-green-600 font-semibold">Studio</p>
-            </div>
+          <div className="flex items-center flex-shrink-0">
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Sam's Print Studio" className="h-40 md:h-50 w-auto object-contain" />
           </div>
 
           {/* Desktop Navigation */}

@@ -19,7 +19,8 @@ const ServicesSection = () => {
     {
       icon: <Tag className="w-12 h-12 text-orange-600" />,
       title: 'Stickers & Labels',
-      description: 'Product labels, branding stickers, custom sizes for your brand needs.'
+      description: 'Product labels, branding stickers, custom sizes for your brand needs.',
+      link: '/service/stickers-labels'
     },
     {
       icon: <Flag className="w-12 h-12 text-red-600" />,
@@ -30,12 +31,14 @@ const ServicesSection = () => {
     {
       icon: <Mail className="w-12 h-12 text-purple-600" />,
       title: 'Letterheads & Envelopes',
-      description: 'Professional stationery for offices and businesses with premium finish.'
+      description: 'Professional stationery for offices and businesses with premium finish.',
+      link: '/service/letterheads'
     },
     {
       icon: <Fingerprint className="w-12 h-12 text-teal-600" />,
       title: 'ID Cards & Custom Prints',
-      description: 'Corporate, school, and event ID cards. Bulk orders welcome.'
+      description: 'Corporate, school, and event ID cards. Bulk orders welcome.',
+      link: '/service/id-cards'
     }
   ];
 

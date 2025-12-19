@@ -10,6 +10,9 @@ import HowToOrderSection from './components/HowToOrderSection';
 import AboutUsSection from './components/AboutUsSection';
 import Footer from './components/Footer';
 import ServicePage from './components/ServicePage';
+import StickersLabelsPage from './components/StickersLabelsPage';
+import LetterheadsPage from './components/LetterheadsPage';
+import IDCardsPage from './components/IDCardsPage';
 
 function HomePage() {
   return (
@@ -45,12 +48,15 @@ function HomePage() {
 
 function App() {
   return (
-    <Router basename={process.env.NODE_ENV === 'production' ? '/Samsprintstudio' : ''}>
+    <Router basename={process.env.PUBLIC_URL || ''}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/service/visiting-cards" element={<ServicePage serviceName="visiting-cards" />} />
         <Route path="/service/flyers" element={<ServicePage serviceName="flyers" />} />
         <Route path="/service/banners" element={<ServicePage serviceName="banners" />} />
+        <Route path="/service/stickers-labels" element={<StickersLabelsPage />} />
+        <Route path="/service/letterheads" element={<LetterheadsPage />} />
+        <Route path="/service/id-cards" element={<IDCardsPage />} />
       </Routes>
     </Router>
   );
