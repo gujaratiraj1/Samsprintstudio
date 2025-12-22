@@ -90,48 +90,6 @@ const WhyChooseUs = () => {
           ))}
         </div>
       </div>
-
-      {/* Trust Strip / Statistics with Parallax-like feel */}
-      <div className="relative py-16 bg-gray-900">
-        {/* Abstract Pattern Background */}
-        <div className="absolute inset-0 overflow-hidden opacity-20">
-          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-500 blur-3xl"></div>
-          <div className="absolute top-1/2 right-0 w-64 h-64 rounded-full bg-green-500 blur-3xl"></div>
-        </div>
-
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-800">
-            <div className="p-4">
-              <div className="flex justify-center mb-4 text-green-400">
-                <Users className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold text-white mb-2">200+</div>
-              <div className="text-gray-400 text-sm uppercase tracking-wider">Happy Clients</div>
-            </div>
-            <div className="p-4">
-              <div className="flex justify-center mb-4 text-blue-400">
-                <Printer className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold text-white mb-2">5000+</div>
-              <div className="text-gray-400 text-sm uppercase tracking-wider">Prints Delivered</div>
-            </div>
-            <div className="p-4">
-              <div className="flex justify-center mb-4 text-yellow-400">
-                <Star className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold text-white mb-2">4.9/5</div>
-              <div className="text-gray-400 text-sm uppercase tracking-wider">Google Rating</div>
-            </div>
-            <div className="p-4">
-              <div className="flex justify-center mb-4 text-purple-400">
-                <CheckCircle2 className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold text-white mb-2">100%</div>
-              <div className="text-gray-400 text-sm uppercase tracking-wider">Satisfaction</div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
   );
 };

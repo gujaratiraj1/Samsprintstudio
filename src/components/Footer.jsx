@@ -76,13 +76,13 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Phone className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm text-gray-400">+91-XXXXXXXXXX</p>
+                  <p className="text-sm text-gray-400">+91-9999999999</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <Mail className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm text-gray-400">info@samprintstudio.com</p>
+                  <p className="text-sm text-gray-400">info@samsprintstudio.com</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">

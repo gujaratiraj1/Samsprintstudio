@@ -1,16 +1,9 @@
 import React from 'react';
-import { MapPin, Zap, Palette } from 'lucide-react';
+import { MapPin, Zap, Palette, Phone } from 'lucide-react';
 
 const HeroSection = () => {
   const handleWhatsAppClick = () => {
     window.open('https://wa.me/919999999999?text=Hi%20Sam%27s%20Print%20Studio%2C%20I%20would%20like%20to%20place%20an%20order', '_blank');
-  };
-
-  const handleQuoteClick = () => {
-    const quoteSectionElement = document.getElementById('pricing');
-    if (quoteSectionElement) {
-      quoteSectionElement.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   return (
@@ -29,86 +22,63 @@ const HeroSection = () => {
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Fast. Smart. Professional Printing in <span className="gradient-text">Bangalore</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+              Fast, Quality, Affordable Printing in <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Bangalore</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed">
-              High-quality printing solutions for businesses, startups, builders, and individuals. From visiting cards to banners—we print it all with speed, precision, and care.
+            <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed font-light">
+              Same-day printing with <span className="font-semibold text-gray-900">free basic design support</span>.
             </p>
 
-            {/* Highlights Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-green-600" />
-                </div>
-                <span className="text-gray-800 font-semibold">Bangalore</span>
+            {/* Highlights Row (Simplified) */}
+            <div className="flex flex-wrap gap-6 mb-10 text-sm font-medium text-gray-600">
+              <div className="flex items-center gap-2">
+                <Zap className="w-5 h-5 text-yellow-500 fill-current" />
+                <span>Same-Day Delivery</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-green-600" />
-                </div>
-                <span className="text-gray-800 font-semibold">Fast Delivery</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Palette className="w-6 h-6 text-green-600" />
-                </div>
-                <span className="text-gray-800 font-semibold">Free Design</span>
+              <div className="flex items-center gap-2">
+                <Palette className="w-5 h-5 text-purple-500" />
+                <span>Free Design Support</span>
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* CTA Buttons - Dominant Primary */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
               <button
                 onClick={handleWhatsAppClick}
-                className="btn-primary inline-flex items-center justify-center space-x-2"
+                className="btn-primary inline-flex items-center justify-center space-x-3 px-8 py-4 text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto"
               >
-                <span>📱</span>
-                <span>WhatsApp Order Now</span>
-              </button>
-              <button
-                onClick={handleQuoteClick}
-                className="btn-outline inline-flex items-center justify-center"
-              >
-                Get Instant Quote
-              </button>
-            </div>
-
-            {/* Trust badge */}
-            <div className="mt-10 pt-8 border-t border-gray-200">
-              <p className="text-sm text-gray-600 mb-3">Trusted by local businesses across Bangalore</p>
-              <div className="flex items-center space-x-2">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-2 border-white"></div>
-                  ))}
+                <div className="p-1 bg-white rounded-full">
+                  <Phone className="w-5 h-5 text-green-600 fill-current" />
                 </div>
-                <span className="text-sm text-gray-700 ml-2">200+ Happy Customers</span>
-              </div>
+                <span className="font-bold">WhatsApp Order Now</span>
+              </button>
+
+              <p className="text-sm text-gray-500 mt-2 sm:mt-0 sm:ml-4 sm:self-center">
+                <span className="mb-1 block sm:inline sm:mb-0">📞</span> +91-XXXXXXXXXX
+              </p>
             </div>
+            {/* Removed Trust Badge from here (Moved to TrustStrip) */}
           </div>
 
           {/* Right side - Visual */}
           <div className="hidden lg:block relative">
             <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-3xl blur-3xl opacity-20"></div>
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500 group">
               <img
                 src={`${process.env.PUBLIC_URL}/images/hero-printing-studio.png`}
                 alt="Sam's Print Studio Workshop"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
               {/* Floating Badge */}
-              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-green-100">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-                    4.9
+              <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg border border-green-100 flex gap-4 items-center">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="w-8 h-8" />
+                <div>
+                  <div className="flex items-center gap-1">
+                    <span className="font-bold text-gray-900 text-lg">4.9</span>
+                    <div className="flex text-yellow-400">★★★★★</div>
                   </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Google Rating</p>
-                    <p className="text-xs text-gray-600">Based on 200+ Reviews</p>
-                  </div>
+                  <p className="text-xs text-gray-600 font-medium whitespace-nowrap">See Google Reviews</p>
                 </div>
               </div>
             </div>
