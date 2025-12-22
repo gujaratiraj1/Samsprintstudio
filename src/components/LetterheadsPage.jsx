@@ -1,8 +1,12 @@
 import React from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import usePageTitle from '../hooks/usePageTitle';
+import DesignPreview from './DesignPreview';
 
 const LetterheadsPage = () => {
+  usePageTitle("Letterheads & Envelopes");
+
   const handleWhatsAppClick = () => {
     window.open('https://wa.me/919999999999?text=Hi%20Sam%27s%20Print%20Studio%2C%20I%20need%20professional%20letterheads%20and%20envelopes', '_blank');
   };
@@ -29,6 +33,18 @@ const LetterheadsPage = () => {
             Back
           </Link>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Letterheads & Envelopes</h1>
+        </div>
+      </div>
+
+      {/* Hero Image Section */}
+      <div className="relative h-64 md:h-80 w-full overflow-hidden">
+        <img
+          src={`${process.env.PUBLIC_URL}/images/letterheads.png`}
+          alt="Professional Letterheads"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4">Letterheads & Envelopes</h2>
         </div>
       </div>
 
@@ -107,14 +123,8 @@ const LetterheadsPage = () => {
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition cursor-pointer group"
             >
               {/* Design Preview */}
-              <div className={`${design.color} h-48 flex items-center justify-center relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10"></div>
-                <div className="text-center z-10">
-                  <div className="w-16 h-16 bg-purple-500 rounded-lg mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold">
-                    LH
-                  </div>
-                  <p className="text-gray-700 font-semibold">{design.title}</p>
-                </div>
+              <div className={`${design.color} h-56 flex items-center justify-center relative overflow-hidden bg-opacity-30 p-4`}>
+                <DesignPreview type="letterheads" style={design.color} title={design.title} />
               </div>
 
               {/* Card Content */}

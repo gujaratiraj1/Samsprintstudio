@@ -5,37 +5,43 @@ import { Layers, BookOpen, Tag, Flag, Mail, Fingerprint } from 'lucide-react';
 const ServicesSection = () => {
   const services = [
     {
-      icon: <Layers className="w-12 h-12 text-green-600" />,
+      image: '/images/visiting-cards.png',
+      icon: <Layers className="w-6 h-6 text-green-600" />,
       title: 'Visiting Cards',
       description: 'Premium matte, glossy, textured & laminated cards with custom designs.',
       link: '/service/visiting-cards'
     },
     {
-      icon: <BookOpen className="w-12 h-12 text-blue-600" />,
+      image: '/images/flyers.png',
+      icon: <BookOpen className="w-6 h-6 text-blue-600" />,
       title: 'Flyers & Brochures',
       description: 'High-impact marketing prints for promotions, events, and campaigns.',
       link: '/service/flyers'
     },
     {
-      icon: <Tag className="w-12 h-12 text-orange-600" />,
+      image: '/images/stickers.png',
+      icon: <Tag className="w-6 h-6 text-orange-600" />,
       title: 'Stickers & Labels',
       description: 'Product labels, branding stickers, custom sizes for your brand needs.',
       link: '/service/stickers-labels'
     },
     {
-      icon: <Flag className="w-12 h-12 text-red-600" />,
+      image: '/images/banners.png',
+      icon: <Flag className="w-6 h-6 text-red-600" />,
       title: 'Banners & Flex',
       description: 'Indoor & outdoor banners with fast delivery. Flexible design options.',
       link: '/service/banners'
     },
     {
-      icon: <Mail className="w-12 h-12 text-purple-600" />,
+      image: '/images/letterheads.png',
+      icon: <Mail className="w-6 h-6 text-purple-600" />,
       title: 'Letterheads & Envelopes',
       description: 'Professional stationery for offices and businesses with premium finish.',
       link: '/service/letterheads'
     },
     {
-      icon: <Fingerprint className="w-12 h-12 text-teal-600" />,
+      image: '/images/hero-printing-studio.png',
+      icon: <Fingerprint className="w-6 h-6 text-teal-600" />,
       title: 'ID Cards & Custom Prints',
       description: 'Corporate, school, and event ID cards. Bulk orders welcome.',
       link: '/service/id-cards'
@@ -54,25 +60,37 @@ const ServicesSection = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="card p-8 card-hover animate-slide-up"
+              className="card group hover:shadow-2xl transition-all duration-300 animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="mb-4 flex items-center justify-center w-16 h-16 bg-gray-100 rounded-lg">
-                {service.icon}
+              {/* Image Header */}
+              <div className="relative h-48 overflow-hidden">
+                <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+                <img
+                  src={`${process.env.PUBLIC_URL}${service.image}`}
+                  alt={service.title}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-lg shadow-sm">
+                  {service.icon}
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{service.description}</p>
-              {service.link ? (
-                <Link to={service.link} className="mt-6 text-green-600 font-semibold hover:text-green-700 flex items-center group">
-                  View Designs
-                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-                </Link>
-              ) : (
-                <button className="mt-6 text-green-600 font-semibold hover:text-green-700 flex items-center group">
-                  Learn more
-                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-                </button>
-              )}
+
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+                <p className="text-gray-600 leading-relaxed mb-4">{service.description}</p>
+                {service.link ? (
+                  <Link to={service.link} className="inline-flex items-center text-green-600 font-semibold hover:text-green-700 transition">
+                    View Designs
+                    <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                ) : (
+                  <button className="inline-flex items-center text-green-600 font-semibold hover:text-green-700 transition">
+                    Learn more
+                    <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>

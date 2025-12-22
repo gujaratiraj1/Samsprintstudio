@@ -18,7 +18,7 @@ const HeroSection = () => {
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-green-100 rounded-full opacity-20 -mr-48 -mt-48"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-100 rounded-full opacity-20 -ml-40 -mb-40"></div>
-      
+
       <div className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left content */}
@@ -28,11 +28,11 @@ const HeroSection = () => {
                 Welcome to Sam's Print Studio
               </span>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Fast. Smart. Professional Printing in <span className="gradient-text">Bangalore</span>
             </h1>
-            
+
             <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed">
               High-quality printing solutions for businesses, startups, builders, and individuals. From visiting cards to banners—we print it all with speed, precision, and care.
             </p>
@@ -90,27 +90,24 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right side - Illustration */}
-          <div className="hidden lg:block">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-3xl blur-3xl opacity-20"></div>
-              <div className="relative bg-white rounded-3xl p-8 shadow-2xl card-hover">
-                <div className="space-y-6">
-                  {/* Mock product cards */}
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200">
-                    <div className="text-3xl mb-2">🎴</div>
-                    <p className="font-semibold text-gray-900">Visiting Cards</p>
-                    <p className="text-sm text-gray-600">₹299 for 500 cards</p>
+          {/* Right side - Visual */}
+          <div className="hidden lg:block relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-3xl blur-3xl opacity-20"></div>
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+              <img
+                src={`${process.env.PUBLIC_URL}/images/hero-printing-studio.png`}
+                alt="Sam's Print Studio Workshop"
+                className="w-full h-auto object-cover"
+              />
+              {/* Floating Badge */}
+              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-green-100">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                    4.9
                   </div>
-                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border-2 border-blue-200">
-                    <div className="text-3xl mb-2">📄</div>
-                    <p className="font-semibold text-gray-900">Flyers & Brochures</p>
-                    <p className="text-sm text-gray-600">Starting ₹2.5 per piece</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-6 border-2 border-orange-200">
-                    <div className="text-3xl mb-2">🏷️</div>
-                    <p className="font-semibold text-gray-900">Stickers & Labels</p>
-                    <p className="text-sm text-gray-600">Custom sizes available</p>
+                  <div>
+                    <p className="font-bold text-gray-900">Google Rating</p>
+                    <p className="text-xs text-gray-600">Based on 200+ Reviews</p>
                   </div>
                 </div>
               </div>

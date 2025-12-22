@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check } from 'lucide-react';
+import usePageTitle from '../hooks/usePageTitle';
+import DesignPreview from './DesignPreview';
 
 export default function ServicePage({ serviceName }) {
   const navigate = useNavigate();
@@ -33,12 +35,29 @@ export default function ServicePage({ serviceName }) {
   };
 
   const serviceInfo = {
-    'visiting-cards': { title: 'Visiting Cards', size: '3.5" x 2"', price: '₹299 for 500 cards' },
-    'flyers': { title: 'Flyers & Brochures', size: 'A5 (5.8" x 8.3")', price: '₹599 for 500 flyers' },
-    'banners': { title: 'Banners', size: 'Custom sizes available', price: 'Starting from ₹799' },
+    'visiting-cards': {
+      title: 'Visiting Cards',
+      size: '3.5" x 2"',
+      price: '₹299 for 500 cards',
+      image: 'visiting-cards.png'
+    },
+    'flyers': {
+      title: 'Flyers & Brochures',
+      size: 'A5 (5.8" x 8.3")',
+      price: '₹599 for 500 flyers',
+      image: 'flyers.png'
+    },
+    'banners': {
+      title: 'Banners',
+      size: 'Custom sizes available',
+      price: 'Starting from ₹799',
+      image: 'banners.png'
+    },
   };
 
   const currentService = serviceInfo[serviceName] || { title: 'Service', size: 'Custom', price: 'Contact for pricing' };
+  usePageTitle(currentService.title);
+
   const currentDesigns = designs[serviceName] || [];
 
   return (
@@ -56,6 +75,20 @@ export default function ServicePage({ serviceName }) {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{currentService.title}</h1>
         </div>
       </div>
+
+      {/* Hero Image Section */}
+      {currentService.image && (
+        <div className="relative h-64 md:h-80 w-full overflow-hidden">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/${currentService.image}`}
+            alt={currentService.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">{currentService.title}</h2>
+          </div>
+        </div>
+      )}
 
       {/* Info Section */}
       <div className="bg-white border-b border-gray-200">
@@ -89,14 +122,8 @@ export default function ServicePage({ serviceName }) {
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition cursor-pointer group"
             >
               {/* Design Preview */}
-              <div className={`${design.color} h-48 flex items-center justify-center relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10"></div>
-                <div className="text-center z-10">
-                  <div className="w-16 h-16 bg-green-500 rounded-lg mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold">
-                    S
-                  </div>
-                  <p className="text-gray-700 font-semibold">{design.title}</p>
-                </div>
+              <div className={`${design.color} h-56 flex items-center justify-center relative overflow-hidden bg-opacity-30 p-4`}>
+                <DesignPreview type={serviceName} style={design.color} title={design.title} />
               </div>
 
               {/* Card Content */}

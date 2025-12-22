@@ -15,9 +15,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Info */}
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              <span className="text-green-500">Sam's</span> Print Studio
-            </h3>
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src={`${process.env.PUBLIC_URL}/logo.png`}
+                alt="Sam's Print Studio Logo"
+                className="h-40 md:h-50 w-auto object-contain brightness-0 invert"
+              />
+            </div>
             <p className="text-gray-400 mb-4">
               Professional printing solutions for Bangalore. Fast, quality, affordable.
             </p>
