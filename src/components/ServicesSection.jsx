@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Layers, BookOpen, Tag, Flag, Mail, Fingerprint } from 'lucide-react';
+import { Layers, BookOpen, Tag, Flag, Mail, Fingerprint, FileText, Camera } from 'lucide-react';
 
 const ServicesSection = () => {
   const services = [
@@ -31,6 +31,20 @@ const ServicesSection = () => {
       title: 'Banners & Flex',
       description: 'Indoor & outdoor banners with fast delivery. Flexible design options.',
       link: '/service/banners'
+    },
+    {
+      image: '/images/document-print.png',
+      icon: <FileText className="w-6 h-6 text-indigo-600" />,
+      title: 'Document Printing',
+      description: 'High-quality laser printing for documents, reports, and presentations.',
+      link: '/service/document-printing'
+    },
+    {
+      image: '/images/photo-print.png',
+      icon: <Camera className="w-6 h-6 text-pink-600" />,
+      title: 'Photo Printing',
+      description: 'Vibrant photo prints on premium glossy or matte paper in various sizes.',
+      link: '/service/photo-printing'
     },
     {
       image: '/images/letterheads.png',

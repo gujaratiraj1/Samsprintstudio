@@ -107,6 +107,8 @@ const AboutUsSection = () => {
                     <option value="Banners">Banners & Flex</option>
                     <option value="Stickers">Stickers/Labels</option>
                     <option value="ID Cards">ID Cards</option>
+                    <option value="Document Printing">Document Printing</option>
+                    <option value="Photo Printing">Photo Printing</option>
                   </select>
                 </div>
               </div>

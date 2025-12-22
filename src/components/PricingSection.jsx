@@ -80,6 +80,22 @@ const PricingSection = () => {
         { quantity: 'Envelopes', price: 'From ₹3/pc', details: 'Standard or premium paper' },
         { quantity: 'Complete stationery', price: 'Custom quote', details: 'Matching design sets' }
       ]
+    },
+    {
+      category: 'Document Printing',
+      items: [
+        { quantity: 'B&W Print (A4)', price: '₹2/page', details: 'Single/Double sided' },
+        { quantity: 'Color Print (A4)', price: '₹10/page', details: 'High-quality laser print' },
+        { quantity: 'Bulk Printing', price: 'From ₹1/page', details: '1000+ pages' }
+      ]
+    },
+    {
+      category: 'Photo Printing',
+      items: [
+        { quantity: '4x6 Passport/Small', price: '₹15/pc', details: 'Glossy photo paper' },
+        { quantity: 'A4 Photo Print', price: '₹50/pc', details: 'Premium photo paper' },
+        { quantity: 'Custom Size', price: 'Custom quote', details: 'Large formats available' }
+      ]
     }
   ];
 

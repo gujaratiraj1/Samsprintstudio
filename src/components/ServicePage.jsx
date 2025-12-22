@@ -32,6 +32,22 @@ export default function ServicePage({ serviceName }) {
       { id: 5, title: 'Grand Opening', description: 'Opening celebration banner', color: 'bg-green-50' },
       { id: 6, title: 'Festival Banner', description: 'Festive design', color: 'bg-purple-50' },
     ],
+    'document-printing': [
+      { id: 1, title: 'B&W Standard', description: 'Standard mono laser print', color: 'bg-gray-50' },
+      { id: 2, title: 'Color Premium', description: 'High-quality color laser', color: 'bg-blue-50' },
+      { id: 3, title: 'Resume/CV', description: 'Professional resume print', color: 'bg-slate-50' },
+      { id: 4, title: 'Project Report', description: 'Academic project printing', color: 'bg-indigo-50' },
+      { id: 5, title: 'Bulk Documents', description: 'Cost-effective bulk print', color: 'bg-zinc-50' },
+      { id: 6, title: 'Laminated Document', description: 'Print with lamination', color: 'bg-cyan-50' },
+    ],
+    'photo-printing': [
+      { id: 1, title: 'Passport Photo', description: 'Standard passport size set', color: 'bg-white' },
+      { id: 2, title: '4x6 Glossy', description: 'Classic photo album size', color: 'bg-rose-50' },
+      { id: 3, title: 'A4 Photo Print', description: 'Large portrait print', color: 'bg-pink-50' },
+      { id: 4, title: 'Matte Finish', description: 'Modern non-reflective finish', color: 'bg-stone-50' },
+      { id: 5, title: 'Square Print', description: 'Instagram-style square print', color: 'bg-orange-50' },
+      { id: 6, title: 'Canvas Style', description: 'Artistic photo print', color: 'bg-amber-50' },
+    ],
   };
 
   const serviceInfo = {
@@ -52,6 +68,18 @@ export default function ServicePage({ serviceName }) {
       size: 'Custom sizes available',
       price: 'Starting from ₹799',
       image: 'banners.png'
+    },
+    'document-printing': {
+      title: 'Document Printing',
+      size: 'A4 / A3 / Legal',
+      price: 'Starting from ₹2',
+      image: 'document-print.png'
+    },
+    'photo-printing': {
+      title: 'Photo Printing',
+      size: '4x6 / A4 / Custom',
+      price: 'Starting from ₹15',
+      image: 'photo-print.png'
     },
   };
 

@@ -24,6 +24,8 @@ function App() {
           <Route path="/service/visiting-cards" element={<ServicePage serviceName="visiting-cards" />} />
           <Route path="/service/flyers" element={<ServicePage serviceName="flyers" />} />
           <Route path="/service/banners" element={<ServicePage serviceName="banners" />} />
+          <Route path="/service/document-printing" element={<ServicePage serviceName="document-printing" />} />
+          <Route path="/service/photo-printing" element={<ServicePage serviceName="photo-printing" />} />
           <Route path="/service/stickers-labels" element={<StickersLabelsPage />} />
           <Route path="/service/letterheads" element={<LetterheadsPage />} />
           <Route path="/service/id-cards" element={<IDCardsPage />} />
