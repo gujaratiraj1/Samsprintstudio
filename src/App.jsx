@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingSpinner from './components/LoadingSpinner';
+import ChatBot from './components/ChatBot';
 
 // Lazy load components for performance optimization
 const HomePage = lazy(() => import('./components/HomePage'));
@@ -10,10 +11,13 @@ const StickersLabelsPage = lazy(() => import('./components/StickersLabelsPage'))
 const LetterheadsPage = lazy(() => import('./components/LetterheadsPage'));
 const IDCardsPage = lazy(() => import('./components/IDCardsPage'));
 
+
+
 function App() {
   return (
     <Router basename={process.env.PUBLIC_URL || ''}>
       <ScrollToTop />
+      <ChatBot />
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<HomePage />} />

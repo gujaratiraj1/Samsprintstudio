@@ -6,10 +6,7 @@ import {
   Palette,
   Building2,
   Headphones,
-  CheckCircle2,
-  Users,
-  Printer,
-  Star
+  CheckCircle2
 } from 'lucide-react';
 
 const WhyChooseUs = () => {

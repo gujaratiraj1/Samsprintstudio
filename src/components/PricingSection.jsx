@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { ChevronDown, ExternalLink, Star } from 'lucide-react';
+import { ExternalLink, Star } from 'lucide-react';
 
 const PricingSection = () => {
-  const [expandedItem, setExpandedItem] = useState(null);
+
 
   const featuredPackages = [
     {

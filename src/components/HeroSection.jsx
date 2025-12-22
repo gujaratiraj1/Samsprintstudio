@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Zap, Palette, Phone } from 'lucide-react';
+import { Zap, Palette, Phone } from 'lucide-react';
 
 const HeroSection = () => {
   const handleWhatsAppClick = () => {
