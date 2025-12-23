@@ -76,22 +76,42 @@ export const chatbotData = {
         {
             question: "How do I order?",
             answer: "The fastest way to order is via WhatsApp. Send us your design (PDF/CDR/AI/High-res Image) or requirements, and we'll provide a quote and timeline.",
-            keywords: ["order", "how to buy", "purchase", "process"]
+            keywords: ["order", "how to buy", "purchase", "process", "booking"]
         },
         {
             question: "Do you offer delivery?",
             answer: "Yes, we offer pickup and delivery options throughout Bangalore, including Kada Agrahara, Sarjapur Road, Whitefield, and nearby areas.",
-            keywords: ["delivery", "shipping", "pickup", "send", "courier"]
+            keywords: ["delivery", "shipping", "pickup", "send", "courier", "home delivery"]
         },
         {
             question: "Can you help with design?",
             answer: "Absolutely! We provide professional design support for all our products. We can help create a design from scratch or verify if your existing file is print-ready.",
-            keywords: ["design", "create", "help with design", "graphic design", "layout"]
+            keywords: ["design", "create", "help with design", "graphic design", "layout", "template"]
         },
         {
             question: "What are the payment options?",
             answer: "We accept UPI (GPay, PhonePe, Paytm), cash, and bank transfers. For large orders, we usually require a 50% advance.",
-            keywords: ["payment", "pay", "google pay", "phonepe", "upi", "cash"]
+            keywords: ["payment", "pay", "google pay", "phonepe", "upi", "cash", "credit card"]
+        },
+        {
+            question: "How long does it take?",
+            answer: "Most digital prints are done same-day! Bulk orders (offset printing) typically take 3-5 business days. Let us know your specific requirement for an accurate timeline.",
+            keywords: ["time", "how long", "turnaround", "duration", "when", "urgent"]
+        },
+        {
+            question: "What file formats do you accept?",
+            answer: "We prefer PDF, AI, CDR (CorelDraw), or High-Res JPG/PNG. Please ensure fonts are converted to curves/outlines.",
+            keywords: ["file format", "pdf", "jpg", "png", "ai", "cdr", "upload"]
+        },
+        {
+            question: "Can I speak to a human?",
+            answer: "Of course! You can call us directly or chat with our team on WhatsApp using the button below. We are here to help.",
+            keywords: ["human", "person", "agent", "support team", "talk to", "manager"]
+        },
+        {
+            question: "Do you print on weekends?",
+            answer: "Yes! We are open Monday through Saturday from 9:00 AM to 8:00 PM. We are closed on Sundays.",
+            keywords: ["weekend", "sunday", "saturday", "holiday", "open"]
         }
     ]
 };

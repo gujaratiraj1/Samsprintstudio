@@ -32,10 +32,40 @@ const ChatBot = () => {
     const generateResponse = (text) => {
         const lowerText = text.toLowerCase();
 
+        // Helper for random responses
+        const randomChoice = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        // 0. Conversational Small Talk
+        if (['hi', 'hello', 'hey', 'greetings', 'morning', 'afternoon'].some(w => lowerText.includes(w))) {
+            return randomChoice([
+                "Hello! 👋 How can I assist you with your printing needs today?",
+                "Hi there! Welcome to Sam's Print Studio. What can I do for you?",
+                "Hey! Looking for high-quality prints? I'm here to help!",
+                "Greetings! 😊 How can use our services today?"
+            ]);
+        }
+
+        if (['thank', 'thanks', 'thx', 'appreciate'].some(w => lowerText.includes(w))) {
+            return randomChoice([
+                "You're very welcome! Let me know if you need anything else. 😊",
+                "Happy to help! Have a great day.",
+                "Anytime! We look forward to serving you.",
+                "Glad I could help! Don't hesitate to ask more questions."
+            ]);
+        }
+
+        if (['bye', 'goodbye', 'see you', 'later'].some(w => lowerText.includes(w))) {
+            return "Goodbye! 👋 Hope to see you soon at Sam's Print Studio.";
+        }
+
+        if (['cool', 'awesome', 'great', 'nice', 'good'].some(w => lowerText === w || lowerText.includes(` ${w}`))) {
+            return randomChoice(["Glad you like it! 🚀", "Awesome! Let us know if you're ready to order.", "That's what we aim for! 🌟"]);
+        }
+
         // 1. Check for specific Service matches
         for (const service of chatbotData.services) {
             if (service.keywords.some(kw => lowerText.includes(kw)) || lowerText.includes(service.name.toLowerCase())) {
-                return `**${service.name}**\n${service.description}\n\n💰 **Pricing:** ${service.pricing}\n\nWould you like to get a custom quote for this?`;
+                return `**${service.name}**\n${service.description}\n\n💰 **Pricing:** ${service.pricing}\n\nWould you like to get a custom quote or see design templates?`;
             }
         }
 
@@ -46,18 +76,18 @@ const ChatBot = () => {
             }
         }
 
-        // 3. Check for specific keywords
-        if (lowerText.includes('price') || lowerText.includes('cost') || lowerText.includes('rate')) {
-            const serviceList = chatbotData.services.map(s => `• ${s.name}: ${s.pricing.split(',')[0]}`).join('\n');
-            return `Here is a quick pricing overview:\n${serviceList}\n\nFor bulk orders or custom sizes, message us on WhatsApp for the best rates!`;
+        // 3. Check for specific keywords (Semantic fallbacks)
+        if (lowerText.includes('price') || lowerText.includes('cost') || lowerText.includes('rate') || lowerText.includes('how much')) {
+            const serviceList = chatbotData.services.slice(0, 4).map(s => `• ${s.name}: ${s.pricing.split(',')[0]}`).join('\n');
+            return `Here is a quick pricing overview for our popular items:\n${serviceList}\n\n...and many more! For bulk orders or custom sizes, message us on WhatsApp for the best rates!`;
         }
 
-        if (lowerText.includes('service') || lowerText.includes('do you offer') || lowerText.includes('what do you do')) {
+        if (lowerText.includes('service') || lowerText.includes('do you offer') || lowerText.includes('what do you do') || lowerText.includes('products')) {
             const serviceList = chatbotData.services.map(s => `• ${s.name}`).join('\n');
             return `We offer a wide range of printing services:\n${serviceList}\n\nWhich one are you interested in?`;
         }
 
-        if (lowerText.includes('location') || lowerText.includes('where') || lowerText.includes('address') || lowerText.includes('area')) {
+        if (lowerText.includes('location') || lowerText.includes('where') || lowerText.includes('address') || lowerText.includes('area') || lowerText.includes('shop')) {
             return `📍 We are located in ${chatbotData.location}.\n\nWe serve Kada Agrahara, Sarjapur Road, and nearby areas with pickup and delivery options.`;
         }
 
@@ -65,7 +95,7 @@ const ChatBot = () => {
             return `⏰ **Our Hours:**\n${chatbotData.operatingHours}`;
         }
 
-        if (lowerText.includes('order') || lowerText.includes('buy') || lowerText.includes('contact') || lowerText.includes('whatsapp') || lowerText.includes('phone')) {
+        if (lowerText.includes('order') || lowerText.includes('buy') || lowerText.includes('contact') || lowerText.includes('whatsapp') || lowerText.includes('phone') || lowerText.includes('call')) {
             return `📲 The fastest way to order is via WhatsApp at ${chatbotData.contact.whatsapp}.\n\nYou can also call us or visit our studio during business hours.`;
         }
 
@@ -74,15 +104,12 @@ const ChatBot = () => {
             return `Here's why customers choose **${chatbotData.businessName}**:\n${featureList}`;
         }
 
-        if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
-            return "Hello! How can I assist you with your printing needs today?";
-        }
-
-        if (lowerText.includes('thank')) {
-            return "You're very welcome! Let me know if you need anything else. 😊";
-        }
-
-        return "I'm not sure I understand that. 🤖\n\nI can help you with info about our **services**, **pricing**, **location**, or **how to order**. You can also chat with us directly on WhatsApp for complex queries!";
+        // 4. Fallback
+        return randomChoice([
+            "I'm not sure I understand that completely. 🤖\n\nI can help you with **services**, **pricing**, **location**, or **how to order**. You can also chat with us directly on WhatsApp for complex queries!",
+            "I'm still learning! Could you rephrase that? I can tell you about our prices, location, or services.",
+            "Hmm, I didn't quite catch that. Do you want to know about our **pricing** or **location**?"
+        ]);
     };
 
     const handleSend = (text) => {
