@@ -20,11 +20,36 @@ const CARD_SHAPES = {
     'square': { label: 'Square', class: 'rounded-none', square: true },
 };
 
+const FONT_FAMILIES = [
+    { name: 'Arial', value: 'Arial, sans-serif', type: 'System' },
+    { name: 'Times New Roman', value: '"Times New Roman", serif', type: 'System' },
+    { name: 'Courier New', value: '"Courier New", monospace', type: 'System' },
+    { name: 'Inter', value: 'Inter, sans-serif', type: 'Google' },
+    { name: 'Roboto', value: 'Roboto, sans-serif', type: 'Google' },
+    { name: 'Playfair Display', value: '"Playfair Display", serif', type: 'Google' },
+    { name: 'Montserrat', value: 'Montserrat, sans-serif', type: 'Google' },
+    { name: 'Oswald', value: 'Oswald, sans-serif', type: 'Google' },
+    { name: 'Dancing Script', value: '"Dancing Script", cursive', type: 'Google' },
+    { name: 'Lato', value: 'Lato, sans-serif', type: 'Google' },
+];
+
 const DesignEditor = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const initialServiceName = location.state?.serviceName || 'Custom Print';
     const canvasRef = useRef(null);
+
+    // Load Google Fonts
+    useEffect(() => {
+        const linkId = 'google-fonts-link';
+        if (!document.getElementById(linkId)) {
+            const link = document.createElement('link');
+            link.id = linkId;
+            link.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        }
+    }, []);
 
     // --- Global State ---
     const [activePreset, setActivePreset] = useState('visiting-card');
@@ -47,6 +72,9 @@ const DesignEditor = () => {
     const [showSafeZone, setShowSafeZone] = useState(true);
     const [bgColor, setBgColor] = useState('#ffffff');
     const [isDragging, setIsDragging] = useState(false);
+    const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+    const [aiPrompt, setAiPrompt] = useState("");
+    const [isGenerating, setIsGenerating] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
     // --- Derived State ---
@@ -113,7 +141,7 @@ const DesignEditor = () => {
         if (type === 'text') {
             newElement.content = 'Double Click to Edit';
             newElement.fontSize = 24;
-            newElement.fontFamily = 'Arial';
+            newElement.fontFamily = FONT_FAMILIES[0].value;
             newElement.color = '#000000';
             newElement.fontWeight = 'normal';
             newElement.width = 'auto';
@@ -137,6 +165,87 @@ const DesignEditor = () => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleAIGenerate = async () => {
+        if (!aiPrompt.trim()) return;
+        setIsGenerating(true);
+
+        // Simulate AI Processing Delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        const lowerPrompt = aiPrompt.toLowerCase();
+        let newElements = [];
+        let bgColor = '#ffffff';
+
+        const centerY = canvasDims.height / 2;
+        const centerX = canvasDims.width / 2;
+
+        // 1. Theme Extraction (Background)
+        if (lowerPrompt.includes('dark') || lowerPrompt.includes('black') || lowerPrompt.includes('luxury')) bgColor = '#1a1a1a';
+        if (lowerPrompt.includes('blue') || lowerPrompt.includes('tech') || lowerPrompt.includes('corporate')) bgColor = '#eff6ff';
+        if (lowerPrompt.includes('green') || lowerPrompt.includes('nature') || lowerPrompt.includes('eco')) bgColor = '#f0fdf4';
+        if (lowerPrompt.includes('red') || lowerPrompt.includes('food') || lowerPrompt.includes('sale')) bgColor = '#fef2f2';
+        if (lowerPrompt.includes('yellow') || lowerPrompt.includes('bright') || lowerPrompt.includes('kids')) bgColor = '#fefce8';
+
+        // 2. Content Generation logic
+        // Title
+        newElements.push({
+            id: Date.now(),
+            type: 'text',
+            x: centerX - 100,
+            y: centerY - 80,
+            content: lowerPrompt.includes('coffee') ? 'The Daily Brew' :
+                lowerPrompt.includes('tech') ? 'Future Systems' :
+                    lowerPrompt.includes('sale') ? 'MEGA SALE' : 'Company Name',
+            fontSize: 32,
+            fontFamily: lowerPrompt.includes('tech') ? 'Roboto, sans-serif' :
+                lowerPrompt.includes('coffee') ? '"Dancing Script", cursive' :
+                    'Montserrat, sans-serif',
+            color: bgColor === '#1a1a1a' ? '#fbbf24' : '#111827',
+            width: 'auto',
+            zIndex: 1,
+            rotation: 0
+        });
+
+        // Subtitle
+        newElements.push({
+            id: Date.now() + 1,
+            type: 'text',
+            x: centerX - 80,
+            y: centerY - 30,
+            content: lowerPrompt.includes('coffee') ? 'Freshly Roasted • Open Daily' :
+                lowerPrompt.includes('tech') ? 'Innovating Tomorrow' :
+                    lowerPrompt.includes('sale') ? 'Up to 50% Off' : 'Tagline Goes Here',
+            fontSize: 16,
+            fontFamily: 'Inter, sans-serif',
+            color: bgColor === '#1a1a1a' ? '#9ca3af' : '#4b5563',
+            width: 'auto',
+            zIndex: 2,
+            rotation: 0
+        });
+
+        // Contact Info (Bottom)
+        newElements.push({
+            id: Date.now() + 2,
+            type: 'text',
+            x: centerX - 90,
+            y: centerY + 60,
+            content: '+91 98765 43210  |  www.example.com',
+            fontSize: 12,
+            fontFamily: 'Arial, sans-serif',
+            color: bgColor === '#1a1a1a' ? '#d1d5db' : '#6b7280',
+            width: 'auto',
+            zIndex: 3,
+            rotation: 0
+        });
+
+        setBgColor(bgColor);
+        setElements(newElements);
+        addToHistory(newElements);
+        setAiPrompt("");
+        setIsGenerating(false);
+        setIsAIModalOpen(false);
     };
 
     // --- Mouse / Drag Handlers ---
@@ -267,6 +376,15 @@ const DesignEditor = () => {
                                     <input type="file" className="hidden" onChange={handleImageUpload} />
                                 </label>
                             </div>
+
+                            {/* AI Design Button */}
+                            <button
+                                onClick={() => setIsAIModalOpen(true)}
+                                className="w-full mt-3 flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] group"
+                            >
+                                <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
+                                <span className="text-sm font-bold">Design with AI</span>
+                            </button>
                         </section>
 
                         {/* Shape Selector (Only for Visiting Cards) */}
@@ -282,8 +400,8 @@ const DesignEditor = () => {
                                             key={key}
                                             onClick={() => setCardShape(key)}
                                             className={`p-2 rounded-lg border text-xs font-medium transition-all ${cardShape === key
-                                                    ? 'border-indigo-600 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500'
-                                                    : 'border-gray-200 text-gray-600 hover:border-indigo-200'
+                                                ? 'border-indigo-600 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500'
+                                                : 'border-gray-200 text-gray-600 hover:border-indigo-200'
                                                 }`}
                                         >
                                             <div className={`w-6 h-4 mx-auto mb-1 bg-current opacity-20 ${config.class} border border-current`}></div>
@@ -342,6 +460,20 @@ const DesignEditor = () => {
                                             </div>
                                             <div>
                                                 <label className="text-xs font-medium text-gray-600 block mb-1">Typography</label>
+
+                                                {/* Font Family Selector */}
+                                                <select
+                                                    value={selectedElement.fontFamily}
+                                                    onChange={(e) => handleElementUpdate(selectedElement.id, { fontFamily: e.target.value })}
+                                                    className="w-full text-xs p-2 mb-2 bg-white border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500"
+                                                >
+                                                    {FONT_FAMILIES.map(font => (
+                                                        <option key={font.name} value={font.value} style={{ fontFamily: font.value }}>
+                                                            {font.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
                                                 <div className="flex gap-2">
                                                     <input type="number" value={selectedElement.fontSize} onChange={(e) => handleElementUpdate(selectedElement.id, { fontSize: parseInt(e.target.value) })} className="w-16 text-sm p-2 bg-white border border-gray-200 rounded-lg" />
                                                     <div className="flex-1 flex items-center px-2 bg-white border border-gray-200 rounded-lg">
@@ -452,6 +584,15 @@ const DesignEditor = () => {
                                 <div
                                     key={el.id}
                                     onMouseDown={(e) => handleMouseDown(e, el.id)}
+                                    // Handle Double Click for Text Editing
+                                    onDoubleClick={(e) => {
+                                        e.stopPropagation();
+                                        if (el.type === 'text') {
+                                            // Simple prompt for quick editing, or we could focus sidebar
+                                            const newText = window.prompt("Edit Text:", el.content);
+                                            if (newText !== null) handleElementUpdate(el.id, { content: newText });
+                                        }
+                                    }}
                                     className={`absolute cursor-move select-none group ${selectedId === el.id ? 'z-50' : ''}`}
                                     style={{
                                         left: el.x,
@@ -460,6 +601,63 @@ const DesignEditor = () => {
                                         zIndex: el.zIndex,
                                     }}
                                 >
+                                    {/* Selecting Element Toolbar */}
+                                    {selectedId === el.id && (
+                                        <div
+                                            className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-white shadow-lg border border-gray-200 rounded-lg flex items-center p-1 gap-1 z-[60] whitespace-nowrap"
+                                            onMouseDown={(e) => e.stopPropagation()} // Prevent drag when clicking toolbar
+                                        >
+                                            <button
+                                                className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-indigo-600"
+                                                title="Edit Text"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (el.type === 'text') {
+                                                        const newText = window.prompt("Edit Text:", el.content);
+                                                        if (newText !== null) handleElementUpdate(el.id, { content: newText });
+                                                    }
+                                                }}
+                                            >
+                                                {el.type === 'text' ? <Type size={14} /> : <ImageIcon size={14} />}
+                                            </button>
+                                            <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
+                                            <button
+                                                className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
+                                                title="Bring to Front"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleElementUpdate(el.id, { zIndex: Math.max(...elements.map(e => e.zIndex)) + 1 });
+                                                }}
+                                            >
+                                                <Layers size={14} />
+                                            </button>
+                                            <button
+                                                className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
+                                                title="Duplicate"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    addElement(el.type, { ...el, id: undefined, x: el.x + 20, y: el.y + 20, zIndex: elements.length + 1 });
+                                                }}
+                                            >
+                                                <Copy size={14} />
+                                            </button>
+                                            <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
+                                            <button
+                                                className="p-1.5 hover:bg-red-50 rounded text-red-500 hover:text-red-600"
+                                                title="Delete Element"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    const newElements = elements.filter(item => item.id !== el.id);
+                                                    setElements(newElements);
+                                                    setSelectedId(null);
+                                                    addToHistory(newElements);
+                                                }}
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    )}
+
                                     {el.type === 'text' ? (
                                         <div
                                             className={`px-2 py-1 leading-none whitespace-nowrap border-2 ${selectedId === el.id ? 'border-indigo-500' : 'border-transparent hover:border-indigo-200 dashed'}`}
@@ -487,7 +685,65 @@ const DesignEditor = () => {
                     </div>
                 </div>
             </div>
-        </div>
+
+            {/* AI Prompt Modal */}
+            {
+                isAIModalOpen && (
+                    <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up">
+                            <div className="p-6 bg-gradient-to-r from-purple-600 to-indigo-600">
+                                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                                    <Sparkles className="w-5 h-5 text-yellow-300" />
+                                    Design with AI
+                                </h2>
+                                <p className="text-indigo-100 text-sm mt-1">
+                                    Describe your design, and we'll create a layout for you.
+                                </p>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        What are you creating?
+                                    </label>
+                                    <textarea
+                                        value={aiPrompt}
+                                        onChange={(e) => setAiPrompt(e.target.value)}
+                                        placeholder="e.g., A minimalist business card for a coffee shop with dark theme..."
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none bg-gray-50 min-h-[100px]"
+                                    />
+                                </div>
+
+                                <div className="flex gap-3 pt-2">
+                                    <button
+                                        onClick={() => setIsAIModalOpen(false)}
+                                        className="flex-1 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleAIGenerate}
+                                        disabled={!aiPrompt.trim() || isGenerating}
+                                        className="flex-[2] py-2.5 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700 transition shadow-lg shadow-purple-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    >
+                                        {isGenerating ? (
+                                            <>
+                                                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                                Generating...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Sparkles className="w-4 h-4" />
+                                                Generate Design
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        </div >
     );
 };
 
