@@ -29,6 +29,7 @@ function App() {
           <Route path="/service/stickers-labels" element={<StickersLabelsPage />} />
           <Route path="/service/letterheads" element={<LetterheadsPage />} />
           <Route path="/service/id-cards" element={<IDCardsPage />} />
+          <Route path="/service/fabric-prints" element={<ServicePage serviceName="fabric-prints" />} />
         </Routes>
       </Suspense>
     </Router>

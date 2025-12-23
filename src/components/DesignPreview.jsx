@@ -124,6 +124,61 @@ const DesignPreview = ({ type, style, title }) => {
         );
     }
 
+    if (type === 'fabric-prints') {
+        const isTshirt = title.toLowerCase().includes('shirt') || title.toLowerCase().includes('hoodie') || title.toLowerCase().includes('polo');
+        const isBag = title.toLowerCase().includes('bag');
+        const isPillow = title.toLowerCase().includes('pillow');
+
+        return (
+            <div className="flex items-center justify-center w-full h-full p-4">
+                <div className={`${baseClasses} p-4 flex flex-col items-center justify-center relative`}>
+                    {isTshirt && (
+                        <div className="relative w-32 h-32 flex items-center justify-center">
+                            {/* T-Shirt Body */}
+                            <div className="absolute inset-0 bg-white/80 rounded-t-xl rounded-b-md shadow-sm"></div>
+                            {/* Sleeves */}
+                            <div className="absolute -left-4 top-2 w-8 h-10 bg-white/80 rounded-tl-lg transform -rotate-12"></div>
+                            <div className="absolute -right-4 top-2 w-8 h-10 bg-white/80 rounded-tr-lg transform rotate-12"></div>
+                            {/* Collar */}
+                            <div className="absolute top-0 w-12 h-4 bg-gray-100 rounded-b-full shadow-inner"></div>
+                            {/* Design on shirt */}
+                            <div className="z-10 w-12 h-12 bg-current opacity-20 rounded-lg flex items-center justify-center">
+                                <span className="text-[10px] font-bold opacity-40">{title[0]}</span>
+                            </div>
+                        </div>
+                    )}
+                    {isBag && (
+                        <div className="relative w-28 h-32 flex flex-col items-center">
+                            {/* Handles */}
+                            <div className="w-16 h-8 border-4 border-white/60 border-b-0 rounded-t-full mb-[-4px]"></div>
+                            {/* Bag Body */}
+                            <div className="w-full h-full bg-white/80 rounded-sm shadow-sm flex items-center justify-center p-4">
+                                <div className="w-12 h-12 border-2 border-current opacity-20 rounded flex items-center justify-center">
+                                    <div className="w-8 h-1 bg-current opacity-20"></div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {isPillow && (
+                        <div className="relative w-32 h-32 flex items-center justify-center">
+                            <div className="w-full h-full bg-white/80 rounded-[2rem] shadow-sm transform rotate-45 flex items-center justify-center overflow-hidden">
+                                <div className="transform -rotate-45 w-full h-full flex items-center justify-center">
+                                    <div className="w-16 h-16 bg-current opacity-10 rounded-full"></div>
+                                </div>
+                            </div>
+                            <div className="absolute inset-4 border-2 border-dashed border-current opacity-10 rounded-[1.5rem] transform rotate-45"></div>
+                        </div>
+                    )}
+                    {!isTshirt && !isBag && !isPillow && (
+                        <div className="w-24 h-24 bg-white/80 rounded-lg shadow-sm flex items-center justify-center">
+                            <div className="w-12 h-12 bg-current opacity-20 rounded-full"></div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
     if (type === 'id-cards') {
         return (
             <div className={`${baseClasses} aspect-[1/1.6] w-24 rounded-lg p-2.5 flex flex-col items-center bg-white shadow-md relative overflow-hidden`}>

@@ -55,6 +55,12 @@ export const chatbotData = {
             description: "Professional office stationery. Premium paper options with crisp printing.",
             pricing: "A4 Letterheads from ₹8/pc, Envelopes from ₹3/pc.",
             keywords: ["letterhead", "envelope", "stationery", "office paper", "official document"]
+        },
+        {
+            name: "Fabric Prints",
+            description: "Customized T-shirts, tote bags, pillows and more. High-quality durable prints with vibrant colors.",
+            pricing: "T-shirts from ₹199, Tote Bags from ₹149, Pillows from ₹249.",
+            keywords: ["t-shirt", "shirt", "fabric", "bag", "pillow", "hoodie", "cap", "tote bag", "fabric print"]
         }
     ],
     features: [

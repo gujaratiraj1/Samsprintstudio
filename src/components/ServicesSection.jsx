@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Layers, BookOpen, Tag, Flag, Mail, Fingerprint, FileText, Camera } from 'lucide-react';
+import { Layers, BookOpen, Tag, Flag, Mail, Fingerprint, FileText, Camera, Shirt } from 'lucide-react';
 
 const ServicesSection = () => {
   const services = [
@@ -52,6 +52,13 @@ const ServicesSection = () => {
       title: 'Letterheads & Envelopes',
       description: 'Professional stationery for offices and businesses with premium finish.',
       link: '/service/letterheads'
+    },
+    {
+      image: '/images/fabric-print.png',
+      icon: <Shirt className="w-6 h-6 text-orange-500" />,
+      title: 'Fabric Prints',
+      description: 'Customized T-shirts, tote bags, pillows and more with your brand or designs.',
+      link: '/service/fabric-prints'
     },
     {
       image: '/images/hero-printing-studio.png',

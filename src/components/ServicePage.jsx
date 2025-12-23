@@ -2,27 +2,27 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check } from 'lucide-react';
 import usePageTitle from '../hooks/usePageTitle';
-import DesignPreview from './DesignPreview';
+import DesignCard from './DesignCard';
 
 export default function ServicePage({ serviceName }) {
   const navigate = useNavigate();
 
   const designs = {
     'visiting-cards': [
-      { id: 1, title: 'Modern Minimalist', description: 'Clean design with name and contact', color: 'bg-blue-50' },
-      { id: 2, title: 'Professional Gold', description: 'Elegant with gold accents', color: 'bg-yellow-50' },
-      { id: 3, title: 'Creative Bold', description: 'Eye-catching gradient design', color: 'bg-purple-50' },
+      { id: 1, title: 'Modern Minimalist', description: 'Clean design with name and contact', color: 'bg-blue-50', image: '/images/templates/visiting-cards/modern-minimalist.png' },
+      { id: 2, title: 'Professional Gold', description: 'Elegant with gold accents', color: 'bg-yellow-50', image: '/images/templates/visiting-cards/professional-gold.png' },
+      { id: 3, title: 'Creative Bold', description: 'Eye-catching gradient design', color: 'bg-purple-50', image: '/images/templates/visiting-cards/creative-bold.png' },
       { id: 4, title: 'Tech Modern', description: 'Contemporary tech-inspired', color: 'bg-gray-50' },
       { id: 5, title: 'Colorful Vibrant', description: 'Bright and energetic', color: 'bg-pink-50' },
       { id: 6, title: 'Classic Elegant', description: 'Timeless black and white', color: 'bg-slate-50' },
     ],
     'flyers': [
-      { id: 1, title: 'Sale Promotion', description: 'Bold promotional design', color: 'bg-red-50' },
-      { id: 2, title: 'Event Flyer', description: 'Professional event announcement', color: 'bg-blue-50' },
-      { id: 3, title: 'Restaurant Menu', description: 'Food business flyer', color: 'bg-orange-50' },
-      { id: 4, title: 'Real Estate', description: 'Property listing flyer', color: 'bg-green-50' },
-      { id: 5, title: 'Workshop', description: 'Educational event flyer', color: 'bg-indigo-50' },
-      { id: 6, title: 'Minimalist', description: 'Clean and simple design', color: 'bg-gray-50' },
+      { id: 1, title: 'Sale Promotion', description: 'Bold promotional design', color: 'bg-red-50', image: '/images/templates/flyers/sale-promotion.png' },
+      { id: 2, title: 'Event Flyer', description: 'Professional event announcement', color: 'bg-blue-50', image: '/images/templates/flyers/event-flyer.png' },
+      { id: 3, title: 'Restaurant Menu', description: 'Food business flyer', color: 'bg-orange-50', image: '/images/templates/flyers/restaurant-menu.png' },
+      { id: 4, title: 'Real Estate', description: 'Property listing flyer', color: 'bg-green-50', image: '/images/templates/flyers/real-estate.png' },
+      { id: 5, title: 'Workshop', description: 'Educational event flyer', color: 'bg-indigo-50', image: '/images/templates/flyers/workshop.png' },
+      { id: 6, title: 'Minimalist', description: 'Clean and simple design', color: 'bg-gray-50', image: '/images/templates/flyers/minimalist.png' },
     ],
     'banners': [
       { id: 1, title: 'Store Banner', description: 'Shop front banner', color: 'bg-yellow-50' },
@@ -47,6 +47,14 @@ export default function ServicePage({ serviceName }) {
       { id: 4, title: 'Matte Finish', description: 'Modern non-reflective finish', color: 'bg-stone-50' },
       { id: 5, title: 'Square Print', description: 'Instagram-style square print', color: 'bg-orange-50' },
       { id: 6, title: 'Canvas Style', description: 'Artistic photo print', color: 'bg-amber-50' },
+    ],
+    'fabric-prints': [
+      { id: 1, title: 'Custom T-Shirt', description: 'Premium cotton T-shirts with your logo', color: 'bg-blue-50' },
+      { id: 2, title: 'Corporate Polo', description: 'Professional polo shirts with embroidery or print', color: 'bg-gray-50' },
+      { id: 3, title: 'Tote Bag', description: 'Eco-friendly branded canvas bags', color: 'bg-orange-50' },
+      { id: 4, title: 'Pillow Cover', description: 'Soft custom printed pillow covers', color: 'bg-purple-50' },
+      { id: 5, title: 'Hoodie Print', description: 'Warm and stylish custom hoodies', color: 'bg-red-50' },
+      { id: 6, title: 'Cap Embroidery', description: 'Branded caps and hats', color: 'bg-gray-100' },
     ],
   };
 
@@ -80,6 +88,12 @@ export default function ServicePage({ serviceName }) {
       size: '4x6 / A4 / Custom',
       price: 'Starting from ₹15',
       image: 'photo-print.png'
+    },
+    'fabric-prints': {
+      title: 'Fabric Prints',
+      size: 'Various Sizes',
+      price: 'Starting from ₹199',
+      image: 'fabric-print.png'
     },
   };
 
@@ -145,26 +159,7 @@ export default function ServicePage({ serviceName }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentDesigns.map((design) => (
-            <div
-              key={design.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition cursor-pointer group"
-            >
-              {/* Design Preview */}
-              <div className={`${design.color} h-56 flex items-center justify-center relative overflow-hidden bg-opacity-30 p-4`}>
-                <DesignPreview type={serviceName} style={design.color} title={design.title} />
-              </div>
-
-              {/* Card Content */}
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{design.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">{design.description}</p>
-
-                <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition font-semibold flex items-center justify-center gap-2 group-hover:gap-3">
-                  <Check className="w-4 h-4" />
-                  Select Design
-                </button>
-              </div>
-            </div>
+            <DesignCard key={design.id} design={design} serviceName={serviceName} />
           ))}
         </div>
       </div>

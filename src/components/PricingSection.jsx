@@ -96,6 +96,14 @@ const PricingSection = () => {
         { quantity: 'A4 Photo Print', price: '₹50/pc', details: 'Premium photo paper' },
         { quantity: 'Custom Size', price: 'Custom quote', details: 'Large formats available' }
       ]
+    },
+    {
+      category: 'Fabric Prints',
+      items: [
+        { quantity: 'Custom T-Shirt', price: 'From ₹199', details: 'Solid colors, cotton material' },
+        { quantity: 'Canvas Tote Bag', price: 'From ₹149', details: 'Eco-friendly, durable' },
+        { quantity: 'Custom Pillow Cover', price: 'From ₹249', details: 'Soft fabric, vibrant prints' }
+      ]
     }
   ];
 
