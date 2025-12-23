@@ -154,8 +154,19 @@ export default function ServicePage({ serviceName }) {
 
       {/* Designs Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose a Design</h2>
-        <p className="text-gray-600 mb-12">Select a design template below and customize it to your needs</p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose a Design</h2>
+            <p className="text-gray-600">Select a design template below or create your own from scratch</p>
+          </div>
+          <button
+            onClick={() => navigate('/design-studio', { state: { serviceName: currentService.title } })}
+            className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <span className="text-lg">🎨</span>
+            Create Custom Design
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentDesigns.map((design) => (

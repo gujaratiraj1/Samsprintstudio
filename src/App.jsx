@@ -10,6 +10,7 @@ const ServicePage = lazy(() => import('./components/ServicePage'));
 const StickersLabelsPage = lazy(() => import('./components/StickersLabelsPage'));
 const LetterheadsPage = lazy(() => import('./components/LetterheadsPage'));
 const IDCardsPage = lazy(() => import('./components/IDCardsPage'));
+const DesignEditor = lazy(() => import('./components/DesignEditor'));
 
 
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/service/letterheads" element={<LetterheadsPage />} />
           <Route path="/service/id-cards" element={<IDCardsPage />} />
           <Route path="/service/fabric-prints" element={<ServicePage serviceName="fabric-prints" />} />
+          <Route path="/design-studio" element={<DesignEditor />} />
         </Routes>
       </Suspense>
     </Router>
