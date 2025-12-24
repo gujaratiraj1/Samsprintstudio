@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate } from 'lucide-react';
+import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2 } from 'lucide-react';
+import { generateAIImage } from '../services/aiService';
 
 // Design Presets Configuration
 const PRODUCT_PRESETS = {
@@ -73,6 +74,7 @@ const DesignEditor = () => {
     const [bgColor, setBgColor] = useState('#ffffff');
     const [isDragging, setIsDragging] = useState(false);
     const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+    const [aiMode, setAiMode] = useState('layout'); // 'layout' or 'image'
     const [aiPrompt, setAiPrompt] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -171,81 +173,91 @@ const DesignEditor = () => {
         if (!aiPrompt.trim()) return;
         setIsGenerating(true);
 
-        // Simulate AI Processing Delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            if (aiMode === 'image') {
+                // Real AI Image Generation
+                const imageUrl = await generateAIImage(aiPrompt);
+                addElement('image', { src: imageUrl, width: 300, height: 'auto' });
+            } else {
+                // Mock Layout Generation (Existing Logic)
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
-        const lowerPrompt = aiPrompt.toLowerCase();
-        let newElements = [];
-        let bgColor = '#ffffff';
+                const lowerPrompt = aiPrompt.toLowerCase();
+                let newElements = [];
+                let bgColor = '#ffffff';
+                const centerY = canvasDims.height / 2;
+                const centerX = canvasDims.width / 2;
 
-        const centerY = canvasDims.height / 2;
-        const centerX = canvasDims.width / 2;
+                // 1. Theme Extraction (Background)
+                if (lowerPrompt.includes('dark') || lowerPrompt.includes('black') || lowerPrompt.includes('luxury')) bgColor = '#1a1a1a';
+                if (lowerPrompt.includes('blue') || lowerPrompt.includes('tech') || lowerPrompt.includes('corporate')) bgColor = '#eff6ff';
+                if (lowerPrompt.includes('green') || lowerPrompt.includes('nature') || lowerPrompt.includes('eco')) bgColor = '#f0fdf4';
+                if (lowerPrompt.includes('red') || lowerPrompt.includes('food') || lowerPrompt.includes('sale')) bgColor = '#fef2f2';
+                if (lowerPrompt.includes('yellow') || lowerPrompt.includes('bright') || lowerPrompt.includes('kids')) bgColor = '#fefce8';
 
-        // 1. Theme Extraction (Background)
-        if (lowerPrompt.includes('dark') || lowerPrompt.includes('black') || lowerPrompt.includes('luxury')) bgColor = '#1a1a1a';
-        if (lowerPrompt.includes('blue') || lowerPrompt.includes('tech') || lowerPrompt.includes('corporate')) bgColor = '#eff6ff';
-        if (lowerPrompt.includes('green') || lowerPrompt.includes('nature') || lowerPrompt.includes('eco')) bgColor = '#f0fdf4';
-        if (lowerPrompt.includes('red') || lowerPrompt.includes('food') || lowerPrompt.includes('sale')) bgColor = '#fef2f2';
-        if (lowerPrompt.includes('yellow') || lowerPrompt.includes('bright') || lowerPrompt.includes('kids')) bgColor = '#fefce8';
+                // 2. Content Generation logic
+                // Title
+                newElements.push({
+                    id: Date.now(),
+                    type: 'text',
+                    x: centerX - 100,
+                    y: centerY - 80,
+                    content: lowerPrompt.includes('coffee') ? 'The Daily Brew' :
+                        lowerPrompt.includes('tech') ? 'Future Systems' :
+                            lowerPrompt.includes('sale') ? 'MEGA SALE' : 'Company Name',
+                    fontSize: 32,
+                    fontFamily: lowerPrompt.includes('tech') ? 'Roboto, sans-serif' :
+                        lowerPrompt.includes('coffee') ? '"Dancing Script", cursive' :
+                            'Montserrat, sans-serif',
+                    color: bgColor === '#1a1a1a' ? '#fbbf24' : '#111827',
+                    width: 'auto',
+                    zIndex: 1,
+                    rotation: 0
+                });
 
-        // 2. Content Generation logic
-        // Title
-        newElements.push({
-            id: Date.now(),
-            type: 'text',
-            x: centerX - 100,
-            y: centerY - 80,
-            content: lowerPrompt.includes('coffee') ? 'The Daily Brew' :
-                lowerPrompt.includes('tech') ? 'Future Systems' :
-                    lowerPrompt.includes('sale') ? 'MEGA SALE' : 'Company Name',
-            fontSize: 32,
-            fontFamily: lowerPrompt.includes('tech') ? 'Roboto, sans-serif' :
-                lowerPrompt.includes('coffee') ? '"Dancing Script", cursive' :
-                    'Montserrat, sans-serif',
-            color: bgColor === '#1a1a1a' ? '#fbbf24' : '#111827',
-            width: 'auto',
-            zIndex: 1,
-            rotation: 0
-        });
+                // Subtitle
+                newElements.push({
+                    id: Date.now() + 1,
+                    type: 'text',
+                    x: centerX - 80,
+                    y: centerY - 30,
+                    content: lowerPrompt.includes('coffee') ? 'Freshly Roasted • Open Daily' :
+                        lowerPrompt.includes('tech') ? 'Innovating Tomorrow' :
+                            lowerPrompt.includes('sale') ? 'Up to 50% Off' : 'Tagline Goes Here',
+                    fontSize: 16,
+                    fontFamily: 'Inter, sans-serif',
+                    color: bgColor === '#1a1a1a' ? '#9ca3af' : '#4b5563',
+                    width: 'auto',
+                    zIndex: 2,
+                    rotation: 0
+                });
 
-        // Subtitle
-        newElements.push({
-            id: Date.now() + 1,
-            type: 'text',
-            x: centerX - 80,
-            y: centerY - 30,
-            content: lowerPrompt.includes('coffee') ? 'Freshly Roasted • Open Daily' :
-                lowerPrompt.includes('tech') ? 'Innovating Tomorrow' :
-                    lowerPrompt.includes('sale') ? 'Up to 50% Off' : 'Tagline Goes Here',
-            fontSize: 16,
-            fontFamily: 'Inter, sans-serif',
-            color: bgColor === '#1a1a1a' ? '#9ca3af' : '#4b5563',
-            width: 'auto',
-            zIndex: 2,
-            rotation: 0
-        });
+                // Contact Info (Bottom)
+                newElements.push({
+                    id: Date.now() + 2,
+                    type: 'text',
+                    x: centerX - 90,
+                    y: centerY + 60,
+                    content: '+91 98765 43210  |  www.example.com',
+                    fontSize: 12,
+                    fontFamily: 'Arial, sans-serif',
+                    color: bgColor === '#1a1a1a' ? '#d1d5db' : '#6b7280',
+                    width: 'auto',
+                    zIndex: 3,
+                    rotation: 0
+                });
 
-        // Contact Info (Bottom)
-        newElements.push({
-            id: Date.now() + 2,
-            type: 'text',
-            x: centerX - 90,
-            y: centerY + 60,
-            content: '+91 98765 43210  |  www.example.com',
-            fontSize: 12,
-            fontFamily: 'Arial, sans-serif',
-            color: bgColor === '#1a1a1a' ? '#d1d5db' : '#6b7280',
-            width: 'auto',
-            zIndex: 3,
-            rotation: 0
-        });
-
-        setBgColor(bgColor);
-        setElements(newElements);
-        addToHistory(newElements);
-        setAiPrompt("");
-        setIsGenerating(false);
-        setIsAIModalOpen(false);
+                setBgColor(bgColor);
+                setElements(newElements);
+                addToHistory(newElements);
+            }
+        } catch (error) {
+            alert("AI Generation Failed: " + error.message);
+        } finally {
+            setAiPrompt("");
+            setIsGenerating(false);
+            setIsAIModalOpen(false);
+        }
     };
 
     // --- Mouse / Drag Handlers ---
@@ -377,14 +389,23 @@ const DesignEditor = () => {
                                 </label>
                             </div>
 
-                            {/* AI Design Button */}
-                            <button
-                                onClick={() => setIsAIModalOpen(true)}
-                                className="w-full mt-3 flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] group"
-                            >
-                                <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-                                <span className="text-sm font-bold">Design with AI</span>
-                            </button>
+                            {/* AI Tools */}
+                            <div className="space-y-2 mt-3">
+                                <button
+                                    onClick={() => { setAiMode('layout'); setIsAIModalOpen(true); }}
+                                    className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] group"
+                                >
+                                    <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
+                                    <span className="text-sm font-bold">Auto-Layout AI</span>
+                                </button>
+                                <button
+                                    onClick={() => { setAiMode('image'); setIsAIModalOpen(true); }}
+                                    className="w-full flex items-center justify-center gap-2 p-3 bg-white border border-indigo-100 text-indigo-600 rounded-xl hover:bg-indigo-50 transition-all font-medium"
+                                >
+                                    <Wand2 className="w-4 h-4" />
+                                    <span className="text-sm">Generate AI Image</span>
+                                </button>
+                            </div>
                         </section>
 
                         {/* Shape Selector (Only for Visiting Cards) */}
@@ -691,24 +712,26 @@ const DesignEditor = () => {
                 isAIModalOpen && (
                     <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
                         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up">
-                            <div className="p-6 bg-gradient-to-r from-purple-600 to-indigo-600">
+                            <div className={`p-6 bg-gradient-to-r ${aiMode === 'image' ? 'from-pink-500 to-rose-500' : 'from-purple-600 to-indigo-600'}`}>
                                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5 text-yellow-300" />
-                                    Design with AI
+                                    {aiMode === 'image' ? <Wand2 className="w-5 h-5 text-white" /> : <Sparkles className="w-5 h-5 text-yellow-300" />}
+                                    {aiMode === 'image' ? 'AI Image Generator' : 'AI Layout Designer'}
                                 </h2>
-                                <p className="text-indigo-100 text-sm mt-1">
-                                    Describe your design, and we'll create a layout for you.
+                                <p className="text-white/90 text-sm mt-1">
+                                    {aiMode === 'image'
+                                        ? "Describe an image, and AI will generate it for you."
+                                        : "Describe your business text, and we'll create a layout."}
                                 </p>
                             </div>
                             <div className="p-6 space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        What are you creating?
+                                        {aiMode === 'image' ? "Image Description" : "Business Description"}
                                     </label>
                                     <textarea
                                         value={aiPrompt}
                                         onChange={(e) => setAiPrompt(e.target.value)}
-                                        placeholder="e.g., A minimalist business card for a coffee shop with dark theme..."
+                                        placeholder={aiMode === 'image' ? "Astronaut riding a horse in space..." : "A minimalist business card for a coffee shop..."}
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none bg-gray-50 min-h-[100px]"
                                     />
                                 </div>
@@ -723,7 +746,7 @@ const DesignEditor = () => {
                                     <button
                                         onClick={handleAIGenerate}
                                         disabled={!aiPrompt.trim() || isGenerating}
-                                        className="flex-[2] py-2.5 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700 transition shadow-lg shadow-purple-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                        className={`flex-[2] py-2.5 text-white font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition ${aiMode === 'image' ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-200' : 'bg-purple-600 hover:bg-purple-700 shadow-purple-200'}`}
                                     >
                                         {isGenerating ? (
                                             <>
@@ -732,8 +755,8 @@ const DesignEditor = () => {
                                             </>
                                         ) : (
                                             <>
-                                                <Sparkles className="w-4 h-4" />
-                                                Generate Design
+                                                {aiMode === 'image' ? <Wand2 className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                                                Generate
                                             </>
                                         )}
                                     </button>
