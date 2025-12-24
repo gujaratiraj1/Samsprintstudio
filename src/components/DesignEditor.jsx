@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2 } from 'lucide-react';
+import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2, ArrowRight, X } from 'lucide-react';
 import { generateAIImage } from '../services/aiService';
 
 // Design Presets Configuration
@@ -32,6 +32,61 @@ const FONT_FAMILIES = [
     { name: 'Oswald', value: 'Oswald, sans-serif', type: 'Google' },
     { name: 'Dancing Script', value: '"Dancing Script", cursive', type: 'Google' },
     { name: 'Lato', value: 'Lato, sans-serif', type: 'Google' },
+];
+
+const DESIGN_TEMPLATES = [
+    {
+        id: 'modern-minimal',
+        name: 'Modern Minimal',
+        bgColor: '#ffffff',
+        elements: [
+            { id: 1, type: 'text', x: 20, y: 80, content: 'JOHN DOE', fontSize: 24, fontFamily: 'Glacial Indifference, sans-serif', color: '#000000', fontWeight: 'bold' },
+            { id: 2, type: 'text', x: 20, y: 110, content: 'Creative Director', fontSize: 14, fontFamily: 'Inter, sans-serif', color: '#666666' },
+            { id: 3, type: 'text', x: 20, y: 150, content: '+1 234 567 890', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#333333' },
+            { id: 4, type: 'text', x: 20, y: 170, content: 'john@example.com', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#333333' }
+        ]
+    },
+    {
+        id: 'dark-elegance',
+        name: 'Dark Elegance',
+        bgColor: '#1a1a1a',
+        elements: [
+            { id: 1, type: 'text', x: 150, y: 80, content: 'LUXE STUDIO', fontSize: 28, fontFamily: '"Playfair Display", serif', color: '#fbbf24', fontWeight: 'bold' },
+            { id: 2, type: 'text', x: 110, y: 120, content: 'Premium Design Services', fontSize: 12, fontFamily: 'Montserrat, sans-serif', color: '#d1d5db' },
+            { id: 3, type: 'text', x: 120, y: 160, content: 'www.luxestudio.com', fontSize: 10, fontFamily: 'Montserrat, sans-serif', color: '#9ca3af' }
+        ]
+    },
+    {
+        id: 'tech-corp',
+        name: 'Tech Corp',
+        bgColor: '#eff6ff',
+        elements: [
+            { id: 1, type: 'text', x: 30, y: 40, content: 'FUTURA', fontSize: 32, fontFamily: 'Roboto, sans-serif', color: '#2563eb', fontWeight: '900' },
+            { id: 2, type: 'text', x: 30, y: 80, content: 'SYSTEMS', fontSize: 32, fontFamily: 'Roboto, sans-serif', color: '#1e40af', fontWeight: '900' },
+            { id: 3, type: 'text', x: 30, y: 140, content: 'Alex Smith', fontSize: 18, fontFamily: 'Inter, sans-serif', color: '#111827' },
+            { id: 4, type: 'text', x: 30, y: 165, content: 'Senior Developer', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#4b5563' }
+        ]
+    },
+    {
+        id: 'artistic-vibe',
+        name: 'Artistic Vibe',
+        bgColor: '#fef2f2',
+        elements: [
+            { id: 1, type: 'text', x: 100, y: 70, content: 'Sarah Kay', fontSize: 36, fontFamily: '"Dancing Script", cursive', color: '#dc2626' },
+            { id: 2, type: 'text', x: 80, y: 120, content: 'Watercolor Artist', fontSize: 14, fontFamily: 'Lato, sans-serif', color: '#7f1d1d' },
+            { id: 3, type: 'text', x: 110, y: 160, content: '@sarahart', fontSize: 12, fontFamily: 'Lato, sans-serif', color: '#991b1b' }
+        ]
+    },
+    {
+        id: 'bold-business',
+        name: 'Bold Business',
+        bgColor: '#f0fdf4',
+        elements: [
+            { id: 1, type: 'text', x: 170, y: 50, content: 'GROWTH', fontSize: 24, fontFamily: 'Oswald, sans-serif', color: '#15803d' },
+            { id: 2, type: 'text', x: 200, y: 80, content: 'AGENCY', fontSize: 24, fontFamily: 'Oswald, sans-serif', color: '#166534' },
+            { id: 3, type: 'text', x: 20, y: 150, content: 'Marketing • Strategy • Sales', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#14532d' }
+        ]
+    }
 ];
 
 const DesignEditor = () => {
@@ -167,6 +222,26 @@ const DesignEditor = () => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const loadTemplate = (template) => {
+        if (elements.length > 0) {
+            if (!window.confirm("This will replace your current design. Are you sure?")) return;
+        }
+
+        const templateElements = template.elements.map(el => ({
+            ...el,
+            id: Date.now() + Math.random(), // New IDs to avoid conflicts
+            zIndex: 10,
+            rotation: 0
+        }));
+
+        setBgColor(template.bgColor);
+        setElements(templateElements);
+        addToHistory(templateElements);
+
+        // Reset specific states
+        setSelectedId(null);
     };
 
     const handleAIGenerate = async () => {
@@ -564,209 +639,282 @@ const DesignEditor = () => {
                     </div>
                 </div>
 
-                {/* 3. Infinite Workspace (Canvas) */}
-                <div className="flex-1 bg-gray-200 overflow-hidden relative flex flex-col items-center justify-center">
+                {/* 3. Infinite Workspace & Templates Container */}
+                <div className="flex-1 bg-gray-200 overflow-hidden relative flex flex-col">
 
-                    {/* Side Toggles (Front/Back) */}
-                    {isCard && (
-                        <div className="absolute top-6 z-10 bg-white p-1 rounded-full shadow-lg flex gap-1 border border-gray-200">
-                            <button
-                                onClick={() => handleSideSwitch('front')}
-                                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeSide === 'front' ? 'bg-indigo-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}`}
-                            >
-                                Front Side
-                            </button>
-                            <button
-                                onClick={() => handleSideSwitch('back')}
-                                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeSide === 'back' ? 'bg-indigo-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}`}
-                            >
-                                Back Side
-                            </button>
-                        </div>
-                    )}
+                    {/* Canvas Area (Top 70%) */}
+                    <div className="flex-1 overflow-hidden relative flex flex-col items-center justify-center">
 
-                    {/* Active Artboard */}
-                    <div className="relative cursor-grab active:cursor-grabbing p-12 overflow-visible">
-                        <div
-                            className={`relative bg-white shadow-2xl transition-all duration-300 ease-out origin-center overflow-hidden ${isCard ? CARD_SHAPES[cardShape].class : ''}`}
-                            onClick={() => setSelectedId(null)}
-                            style={{
-                                width: canvasDims.width,
-                                height: canvasDims.height,
-                                backgroundColor: bgColor,
-                                transform: `scale(${zoom})`,
-                            }}
-                        >
-                            {showGrid && <GridOverlay />}
-                            {showSafeZone && <SafeZoneOverlay {...basePreset} />}
-
-                            {/* Render Elements */}
-                            {elements.map(el => (
-                                <div
-                                    key={el.id}
-                                    onMouseDown={(e) => handleMouseDown(e, el.id)}
-                                    // Handle Double Click for Text Editing
-                                    onDoubleClick={(e) => {
-                                        e.stopPropagation();
-                                        if (el.type === 'text') {
-                                            // Simple prompt for quick editing, or we could focus sidebar
-                                            const newText = window.prompt("Edit Text:", el.content);
-                                            if (newText !== null) handleElementUpdate(el.id, { content: newText });
-                                        }
-                                    }}
-                                    className={`absolute cursor-move select-none group ${selectedId === el.id ? 'z-50' : ''}`}
-                                    style={{
-                                        left: el.x,
-                                        top: el.y,
-                                        width: el.type === 'image' ? el.width : 'auto',
-                                        zIndex: el.zIndex,
-                                    }}
+                        {/* Side Toggles (Front/Back) */}
+                        {isCard && (
+                            <div className="absolute top-6 z-10 bg-white p-1 rounded-full shadow-lg flex gap-1 border border-gray-200">
+                                <button
+                                    onClick={() => handleSideSwitch('front')}
+                                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeSide === 'front' ? 'bg-indigo-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}`}
                                 >
-                                    {/* Selecting Element Toolbar */}
-                                    {selectedId === el.id && (
-                                        <div
-                                            className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-white shadow-lg border border-gray-200 rounded-lg flex items-center p-1 gap-1 z-[60] whitespace-nowrap"
-                                            onMouseDown={(e) => e.stopPropagation()} // Prevent drag when clicking toolbar
-                                        >
-                                            <button
-                                                className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-indigo-600"
-                                                title="Edit Text"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    if (el.type === 'text') {
-                                                        const newText = window.prompt("Edit Text:", el.content);
-                                                        if (newText !== null) handleElementUpdate(el.id, { content: newText });
-                                                    }
-                                                }}
-                                            >
-                                                {el.type === 'text' ? <Type size={14} /> : <ImageIcon size={14} />}
-                                            </button>
-                                            <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
-                                            <button
-                                                className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
-                                                title="Bring to Front"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleElementUpdate(el.id, { zIndex: Math.max(...elements.map(e => e.zIndex)) + 1 });
-                                                }}
-                                            >
-                                                <Layers size={14} />
-                                            </button>
-                                            <button
-                                                className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
-                                                title="Duplicate"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    addElement(el.type, { ...el, id: undefined, x: el.x + 20, y: el.y + 20, zIndex: elements.length + 1 });
-                                                }}
-                                            >
-                                                <Copy size={14} />
-                                            </button>
-                                            <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
-                                            <button
-                                                className="p-1.5 hover:bg-red-50 rounded text-red-500 hover:text-red-600"
-                                                title="Delete Element"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    const newElements = elements.filter(item => item.id !== el.id);
-                                                    setElements(newElements);
-                                                    setSelectedId(null);
-                                                    addToHistory(newElements);
-                                                }}
-                                            >
-                                                <Trash2 size={14} />
-                                            </button>
-                                        </div>
-                                    )}
+                                    Front Side
+                                </button>
+                                <button
+                                    onClick={() => handleSideSwitch('back')}
+                                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeSide === 'back' ? 'bg-indigo-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}`}
+                                >
+                                    Back Side
+                                </button>
+                            </div>
+                        )}
 
-                                    {el.type === 'text' ? (
-                                        <div
-                                            className={`px-2 py-1 leading-none whitespace-nowrap border-2 ${selectedId === el.id ? 'border-indigo-500' : 'border-transparent hover:border-indigo-200 dashed'}`}
-                                            style={{
-                                                color: el.color,
-                                                fontSize: el.fontSize,
-                                                fontFamily: el.fontFamily
-                                            }}
-                                        >
-                                            {el.content}
-                                        </div>
-                                    ) : (
-                                        <div className={`relative ${selectedId === el.id ? 'ring-2 ring-indigo-500' : ''}`}>
-                                            <img src={el.src} alt="" className="w-full h-auto block pointer-events-none" />
-                                        </div>
-                                    )}
+                        {/* Active Artboard */}
+                        <div className="relative cursor-grab active:cursor-grabbing p-12 overflow-visible">
+                            <div
+                                className={`relative bg-white shadow-2xl transition-all duration-300 ease-out origin-center overflow-hidden ${isCard ? CARD_SHAPES[cardShape].class : ''}`}
+                                onClick={() => setSelectedId(null)}
+                                style={{
+                                    width: canvasDims.width,
+                                    height: canvasDims.height,
+                                    backgroundColor: bgColor,
+                                    transform: `scale(${zoom})`,
+                                }}
+                            >
+                                {showGrid && <GridOverlay />}
+                                {showSafeZone && <SafeZoneOverlay {...basePreset} />}
+
+                                {/* Render Elements */}
+                                {elements.map(el => (
+                                    <div
+                                        key={el.id}
+                                        onMouseDown={(e) => handleMouseDown(e, el.id)}
+                                        // Handle Double Click for Text Editing
+                                        onDoubleClick={(e) => {
+                                            e.stopPropagation();
+                                            if (el.type === 'text') {
+                                                // Simple prompt for quick editing, or we could focus sidebar
+                                                const newText = window.prompt("Edit Text:", el.content);
+                                                if (newText !== null) handleElementUpdate(el.id, { content: newText });
+                                            }
+                                        }}
+                                        className={`absolute cursor-move select-none group ${selectedId === el.id ? 'z-50' : ''}`}
+                                        style={{
+                                            left: el.x,
+                                            top: el.y,
+                                            width: el.type === 'image' ? el.width : 'auto',
+                                            zIndex: el.zIndex,
+                                        }}
+                                    >
+                                        {/* Selecting Element Toolbar */}
+                                        {selectedId === el.id && (
+                                            <div
+                                                className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-white shadow-lg border border-gray-200 rounded-lg flex items-center p-1 gap-1 z-[60] whitespace-nowrap"
+                                                onMouseDown={(e) => e.stopPropagation()} // Prevent drag when clicking toolbar
+                                            >
+                                                <button
+                                                    className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-indigo-600"
+                                                    title="Edit Text"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (el.type === 'text') {
+                                                            const newText = window.prompt("Edit Text:", el.content);
+                                                            if (newText !== null) handleElementUpdate(el.id, { content: newText });
+                                                        }
+                                                    }}
+                                                >
+                                                    {el.type === 'text' ? <Type size={14} /> : <ImageIcon size={14} />}
+                                                </button>
+                                                <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
+                                                <button
+                                                    className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
+                                                    title="Bring to Front"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleElementUpdate(el.id, { zIndex: Math.max(...elements.map(e => e.zIndex)) + 1 });
+                                                    }}
+                                                >
+                                                    <Layers size={14} />
+                                                </button>
+                                                <button
+                                                    className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
+                                                    title="Duplicate"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        addElement(el.type, { ...el, id: undefined, x: el.x + 20, y: el.y + 20, zIndex: elements.length + 1 });
+                                                    }}
+                                                >
+                                                    <Copy size={14} />
+                                                </button>
+                                                <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
+                                                <button
+                                                    className="p-1.5 hover:bg-red-50 rounded text-red-500 hover:text-red-600"
+                                                    title="Delete Element"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        const newElements = elements.filter(item => item.id !== el.id);
+                                                        setElements(newElements);
+                                                        setSelectedId(null);
+                                                        addToHistory(newElements);
+                                                    }}
+                                                >
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {el.type === 'text' ? (
+                                            <div
+                                                className={`px-2 py-1 leading-none whitespace-nowrap border-2 ${selectedId === el.id ? 'border-indigo-500' : 'border-transparent hover:border-indigo-200 dashed'}`}
+                                                style={{
+                                                    color: el.color,
+                                                    fontSize: el.fontSize,
+                                                    fontFamily: el.fontFamily
+                                                }}
+                                            >
+                                                {el.content}
+                                            </div>
+                                        ) : (
+                                            <div className={`relative ${selectedId === el.id ? 'ring-2 ring-indigo-500' : ''}`}>
+                                                <img src={el.src} alt="" className="w-full h-auto block pointer-events-none" />
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Zoom & Dimensions Badge */}
+                            <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-white/80 backdrop-blur px-3 py-1 rounded-full border border-gray-200 text-gray-400 text-[10px] font-mono shadow-sm z-20">
+                                {canvasDims.width}px x {canvasDims.height}px
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 4. Bottom Template Panel (Bottom 30%) */}
+                    <div className="h-[30%] bg-white border-t border-gray-200 z-10 flex flex-col shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+                        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-indigo-50 rounded-lg">
+                                    <LayoutTemplate className="w-4 h-4 text-indigo-600" />
                                 </div>
-                            ))}
+                                <div>
+                                    <h3 className="text-sm font-bold text-gray-800">Design Templates</h3>
+                                    <p className="text-[10px] text-gray-500">Choose a professional starting point</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100">
+                                    {DESIGN_TEMPLATES.length} Designs Available
+                                </span>
+                            </div>
                         </div>
 
-                        {/* Zoom & Dimensions Badge */}
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-gray-400 text-xs font-mono">
-                            {canvasDims.width}px x {canvasDims.height}px
+                        <div className="flex-1 overflow-x-auto custom-scrollbar p-6 flex gap-6 items-start">
+                            {DESIGN_TEMPLATES.map(template => (
+                                <button
+                                    key={template.id}
+                                    onClick={() => loadTemplate(template)}
+                                    className="min-w-[240px] group text-left transition-all duration-300 hover:-translate-y-2"
+                                >
+                                    <div
+                                        className="w-full aspect-[1.75] rounded-xl shadow-md border border-gray-200 group-hover:border-indigo-500 group-hover:ring-4 group-hover:ring-indigo-50 transition-all relative overflow-hidden mb-3 bg-white"
+                                        style={{ backgroundColor: template.bgColor }}
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        {/* Mini Preview of Elements - Scaled to Fit */}
+                                        <div className="absolute inset-0 origin-top-left transform scale-[0.68] pointer-events-none p-4">
+                                            {template.elements.slice(0, 5).map((el, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="absolute whitespace-nowrap opacity-90"
+                                                    style={{
+                                                        left: el.x,
+                                                        top: el.y,
+                                                        color: el.color,
+                                                        fontFamily: el.fontFamily.split(',')[0],
+                                                        fontSize: el.fontSize,
+                                                        fontWeight: el.fontWeight || 'normal',
+                                                        textShadow: el.color === '#ffffff' ? '0 1px 2px rgba(0,0,0,0.1)' : 'none'
+                                                    }}
+                                                >
+                                                    {el.content}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-between px-1">
+                                        <span className="text-xs font-bold text-gray-700 group-hover:text-indigo-600 transition-colors">
+                                            {template.name}
+                                        </span>
+                                        <ArrowRight className="w-3 h-3 text-gray-300 group-hover:text-indigo-400 transform translate-x-0 group-hover:translate-x-1 transition-all" />
+                                    </div>
+                                </button>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* AI Prompt Modal */}
-            {
-                isAIModalOpen && (
-                    <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-                        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up">
-                            <div className={`p-6 bg-gradient-to-r ${aiMode === 'image' ? 'from-pink-500 to-rose-500' : 'from-purple-600 to-indigo-600'}`}>
-                                <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                                    {aiMode === 'image' ? <Wand2 className="w-5 h-5 text-white" /> : <Sparkles className="w-5 h-5 text-yellow-300" />}
-                                    {aiMode === 'image' ? 'AI Image Generator' : 'AI Layout Designer'}
-                                </h2>
-                                <p className="text-white/90 text-sm mt-1">
-                                    {aiMode === 'image'
-                                        ? "Describe an image, and AI will generate it for you."
-                                        : "Describe your business text, and we'll create a layout."}
-                                </p>
+            {isAIModalOpen && (
+                <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up border border-white/20">
+                        <div className={`p-8 bg-gradient-to-br ${aiMode === 'image' ? 'from-rose-500 via-pink-600 to-fuchsia-700' : 'from-indigo-600 via-purple-600 to-indigo-800'}`}>
+                            <div className="flex justify-between items-start mb-2">
+                                <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl">
+                                    {aiMode === 'image' ? <Wand2 className="w-6 h-6 text-white" /> : <Sparkles className="w-6 h-6 text-yellow-300" />}
+                                </div>
+                                <button onClick={() => setIsAIModalOpen(false)} className="text-white/60 hover:text-white transition">
+                                    <X className="w-6 h-6" />
+                                </button>
                             </div>
-                            <div className="p-6 space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        {aiMode === 'image' ? "Image Description" : "Business Description"}
-                                    </label>
-                                    <textarea
-                                        value={aiPrompt}
-                                        onChange={(e) => setAiPrompt(e.target.value)}
-                                        placeholder={aiMode === 'image' ? "Astronaut riding a horse in space..." : "A minimalist business card for a coffee shop..."}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none bg-gray-50 min-h-[100px]"
-                                    />
-                                </div>
+                            <h2 className="text-2xl font-bold text-white tracking-tight">
+                                {aiMode === 'image' ? 'AI Image Generator' : 'AI Layout Designer'}
+                            </h2>
+                            <p className="text-white/80 text-sm mt-2 leading-relaxed">
+                                {aiMode === 'image'
+                                    ? "Describe your vision, and our neural engine will bring it to life as a high-quality asset for your design."
+                                    : "Briefly explain your business or idea, and we'll craft a professional layout optimized for your brand."}
+                            </p>
+                        </div>
+                        <div className="p-8 space-y-6">
+                            <div className="space-y-3">
+                                <label className="flex justify-between text-sm font-semibold text-gray-700">
+                                    <span>Prompt Description</span>
+                                    <span className="text-[10px] text-gray-400 font-mono">{aiPrompt.length}/500</span>
+                                </label>
+                                <textarea
+                                    value={aiPrompt}
+                                    onChange={(e) => setAiPrompt(e.target.value)}
+                                    placeholder={aiMode === 'image' ? "E.g., A minimalist logo of a golden leaf with subtle gradients..." : "E.g., A luxury wedding planner business card with floral accents and serif typography..."}
+                                    className="w-full px-5 py-4 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none bg-gray-50/50 min-h-[120px] text-sm resize-none transition-all placeholder:text-gray-400"
+                                />
+                            </div>
 
-                                <div className="flex gap-3 pt-2">
-                                    <button
-                                        onClick={() => setIsAIModalOpen(false)}
-                                        className="flex-1 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleAIGenerate}
-                                        disabled={!aiPrompt.trim() || isGenerating}
-                                        className={`flex-[2] py-2.5 text-white font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition ${aiMode === 'image' ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-200' : 'bg-purple-600 hover:bg-purple-700 shadow-purple-200'}`}
-                                    >
-                                        {isGenerating ? (
-                                            <>
-                                                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                                                Generating...
-                                            </>
-                                        ) : (
-                                            <>
-                                                {aiMode === 'image' ? <Wand2 className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-                                                Generate
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
+                            <div className="flex gap-4 pt-2">
+                                <button
+                                    onClick={() => setIsAIModalOpen(false)}
+                                    className="px-6 py-4 bg-gray-100 text-gray-700 font-bold rounded-2xl hover:bg-gray-200 transition-all flex-[1]"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleAIGenerate}
+                                    disabled={!aiPrompt.trim() || isGenerating}
+                                    className={`flex-[2.5] py-4 text-white font-bold rounded-2xl shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 transition-all duration-300 ${aiMode === 'image' ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-200 hover:shadow-rose-300' : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200 hover:shadow-indigo-300'}`}
+                                >
+                                    {isGenerating ? (
+                                        <>
+                                            <span className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                            <span>Crafting Magic...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {aiMode === 'image' ? <Wand2 className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
+                                            <span>Generate Design</span>
+                                        </>
+                                    )}
+                                </button>
                             </div>
                         </div>
                     </div>
-                )
-            }
-        </div >
+                </div>
+            )}
+        </div>
     );
 };
 
