@@ -36,55 +36,86 @@ const FONT_FAMILIES = [
 
 const DESIGN_TEMPLATES = [
     {
+        id: 'borcelle-luxury',
+        name: 'Borcelle Luxury',
+        bgColor: '#121212',
+        front: [
+            { id: 1, type: 'text', x: 145, y: 70, content: '∞', fontSize: 60, fontFamily: 'Inter, sans-serif', color: '#ffffff', fontWeight: 'bold' },
+            { id: 2, type: 'text', x: 125, y: 140, content: 'Borcelle Inc.', fontSize: 18, fontFamily: 'Montserrat, sans-serif', color: '#ffffff', fontWeight: '500' }
+        ],
+        back: [
+            { id: 1, type: 'text', x: 30, y: 80, content: '∞', fontSize: 40, fontFamily: 'Inter, sans-serif', color: '#ffffff', fontWeight: 'bold' },
+            { id: 2, type: 'text', x: 20, y: 130, content: 'Borcelle Inc.', fontSize: 14, fontFamily: 'Montserrat, sans-serif', color: '#ffffff', fontWeight: '500' },
+            { id: 3, type: 'text', x: 200, y: 60, content: 'Jackson Lee', fontSize: 24, fontFamily: 'Montserrat, sans-serif', color: '#ffffff', fontWeight: 'bold' },
+            { id: 4, type: 'text', x: 200, y: 90, content: 'General Manager', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#cccccc' },
+            { id: 5, type: 'text', x: 200, y: 130, content: '📞 +123-456-7890', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#ffffff' },
+            { id: 6, type: 'text', x: 200, y: 150, content: '📍 123 Anywhere St., Any City', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#ffffff' },
+            { id: 7, type: 'text', x: 200, y: 170, content: '✉ hello@reallygreatsite.com', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#ffffff' }
+        ]
+    },
+    {
         id: 'modern-minimal',
         name: 'Modern Minimal',
         bgColor: '#ffffff',
-        elements: [
+        front: [
             { id: 1, type: 'text', x: 20, y: 80, content: 'JOHN DOE', fontSize: 24, fontFamily: 'Glacial Indifference, sans-serif', color: '#000000', fontWeight: 'bold' },
             { id: 2, type: 'text', x: 20, y: 110, content: 'Creative Director', fontSize: 14, fontFamily: 'Inter, sans-serif', color: '#666666' },
             { id: 3, type: 'text', x: 20, y: 150, content: '+1 234 567 890', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#333333' },
             { id: 4, type: 'text', x: 20, y: 170, content: 'john@example.com', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#333333' }
-        ]
+        ],
+        back: []
     },
     {
         id: 'dark-elegance',
         name: 'Dark Elegance',
         bgColor: '#1a1a1a',
-        elements: [
+        front: [
             { id: 1, type: 'text', x: 150, y: 80, content: 'LUXE STUDIO', fontSize: 28, fontFamily: '"Playfair Display", serif', color: '#fbbf24', fontWeight: 'bold' },
             { id: 2, type: 'text', x: 110, y: 120, content: 'Premium Design Services', fontSize: 12, fontFamily: 'Montserrat, sans-serif', color: '#d1d5db' },
             { id: 3, type: 'text', x: 120, y: 160, content: 'www.luxestudio.com', fontSize: 10, fontFamily: 'Montserrat, sans-serif', color: '#9ca3af' }
-        ]
+        ],
+        back: []
     },
     {
         id: 'tech-corp',
         name: 'Tech Corp',
         bgColor: '#eff6ff',
-        elements: [
+        front: [
             { id: 1, type: 'text', x: 30, y: 40, content: 'FUTURA', fontSize: 32, fontFamily: 'Roboto, sans-serif', color: '#2563eb', fontWeight: '900' },
             { id: 2, type: 'text', x: 30, y: 80, content: 'SYSTEMS', fontSize: 32, fontFamily: 'Roboto, sans-serif', color: '#1e40af', fontWeight: '900' },
             { id: 3, type: 'text', x: 30, y: 140, content: 'Alex Smith', fontSize: 18, fontFamily: 'Inter, sans-serif', color: '#111827' },
             { id: 4, type: 'text', x: 30, y: 165, content: 'Senior Developer', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#4b5563' }
-        ]
+        ],
+        back: []
     },
     {
         id: 'artistic-vibe',
         name: 'Artistic Vibe',
         bgColor: '#fef2f2',
-        elements: [
+        front: [
             { id: 1, type: 'text', x: 100, y: 70, content: 'Sarah Kay', fontSize: 36, fontFamily: '"Dancing Script", cursive', color: '#dc2626' },
             { id: 2, type: 'text', x: 80, y: 120, content: 'Watercolor Artist', fontSize: 14, fontFamily: 'Lato, sans-serif', color: '#7f1d1d' },
             { id: 3, type: 'text', x: 110, y: 160, content: '@sarahart', fontSize: 12, fontFamily: 'Lato, sans-serif', color: '#991b1b' }
-        ]
+        ],
+        back: []
     },
     {
-        id: 'bold-business',
-        name: 'Bold Business',
-        bgColor: '#f0fdf4',
-        elements: [
-            { id: 1, type: 'text', x: 170, y: 50, content: 'GROWTH', fontSize: 24, fontFamily: 'Oswald, sans-serif', color: '#15803d' },
-            { id: 2, type: 'text', x: 200, y: 80, content: 'AGENCY', fontSize: 24, fontFamily: 'Oswald, sans-serif', color: '#166534' },
-            { id: 3, type: 'text', x: 20, y: 150, content: 'Marketing • Strategy • Sales', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#14532d' }
+        id: 'larana-eco',
+        name: 'Larana Eco',
+        bgColor: '#ffffff',
+        front: [
+            { id: 1, type: 'text', x: 230, y: 40, content: '✿', fontSize: 60, fontFamily: 'Inter, sans-serif', color: '#8FB168' },
+            { id: 2, type: 'text', x: 180, y: 105, content: 'Larana, Inc.', fontSize: 24, fontFamily: 'Montserrat, sans-serif', color: '#1B3022', fontWeight: 'bold' },
+            { id: 3, type: 'text', x: 180, y: 145, content: 'reallygreatsite.com', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#8FB168' }
+        ],
+        back: [
+            { id: 1, type: 'text', x: 25, y: 35, content: 'Avery Davis', fontSize: 22, fontFamily: 'Montserrat, sans-serif', color: '#8FB168', fontWeight: 'bold' },
+            { id: 2, type: 'text', x: 25, y: 65, content: 'Director', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#555555' },
+            { id: 3, type: 'text', x: 25, y: 140, content: '✿', fontSize: 30, fontFamily: 'Inter, sans-serif', color: '#8FB168' },
+            { id: 4, type: 'text', x: 25, y: 175, content: 'Larana, Inc.', fontSize: 14, fontFamily: 'Montserrat, sans-serif', color: '#1B3022', fontWeight: 'bold' },
+            { id: 5, type: 'text', x: 160, y: 80, content: '📞 +123-456-7890', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#1B3022' },
+            { id: 6, type: 'text', x: 160, y: 110, content: '🌐 www.reallygreatsite.com', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#1B3022' },
+            { id: 7, type: 'text', x: 160, y: 140, content: '📍 123 Anywhere St., Any City', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#1B3022' }
         ]
     }
 ];
@@ -225,20 +256,28 @@ const DesignEditor = () => {
     };
 
     const loadTemplate = (template) => {
-        if (elements.length > 0) {
-            if (!window.confirm("This will replace your current design. Are you sure?")) return;
+        if (elements.length > 0 || pages.back.length > 0) {
+            if (!window.confirm("This will replace your current design (both sides). Are you sure?")) return;
         }
 
-        const templateElements = template.elements.map(el => ({
+        const remapElements = (els) => (els || []).map(el => ({
             ...el,
             id: Date.now() + Math.random(), // New IDs to avoid conflicts
-            zIndex: 10,
+            zIndex: el.zIndex || 10,
             rotation: 0
         }));
 
+        const frontElements = remapElements(template.front || template.elements);
+        const backElements = remapElements(template.back);
+
         setBgColor(template.bgColor);
-        setElements(templateElements);
-        addToHistory(templateElements);
+
+        const newPages = { front: frontElements, back: backElements };
+        setPages(newPages);
+
+        // Update current visible elements
+        setElements(newPages[activeSide]);
+        addToHistory(newPages[activeSide]);
 
         // Reset specific states
         setSelectedId(null);
@@ -817,7 +856,7 @@ const DesignEditor = () => {
                                         <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                         {/* Mini Preview of Elements - Scaled to Fit */}
                                         <div className="absolute inset-0 origin-top-left transform scale-[0.68] pointer-events-none p-4">
-                                            {template.elements.slice(0, 5).map((el, idx) => (
+                                            {(template.front || template.elements || []).slice(0, 5).map((el, idx) => (
                                                 <div
                                                     key={idx}
                                                     className="absolute whitespace-nowrap opacity-90"
