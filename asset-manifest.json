@@ -1,23 +1,27 @@
 {
   "files": {
-    "main.css": "/Samsprintstudio/static/css/main.b7f91385.css",
-    "main.js": "/Samsprintstudio/static/js/main.f2583a83.js",
-    "static/js/305.05c1d6d5.chunk.js": "/Samsprintstudio/static/js/305.05c1d6d5.chunk.js",
-    "static/js/35.101a755e.chunk.js": "/Samsprintstudio/static/js/35.101a755e.chunk.js",
-    "static/js/995.762f8db2.chunk.js": "/Samsprintstudio/static/js/995.762f8db2.chunk.js",
-    "static/js/659.93893509.chunk.js": "/Samsprintstudio/static/js/659.93893509.chunk.js",
-    "static/js/646.473a49b6.chunk.js": "/Samsprintstudio/static/js/646.473a49b6.chunk.js",
+    "main.css": "/Samsprintstudio/static/css/main.1c31b540.css",
+    "main.js": "/Samsprintstudio/static/js/main.db0fbf86.js",
+    "static/js/827.122f1499.chunk.js": "/Samsprintstudio/static/js/827.122f1499.chunk.js",
+    "static/js/408.72a3543c.chunk.js": "/Samsprintstudio/static/js/408.72a3543c.chunk.js",
+    "static/js/995.45410d3d.chunk.js": "/Samsprintstudio/static/js/995.45410d3d.chunk.js",
+    "static/js/659.e435657c.chunk.js": "/Samsprintstudio/static/js/659.e435657c.chunk.js",
+    "static/js/646.c81a3e0f.chunk.js": "/Samsprintstudio/static/js/646.c81a3e0f.chunk.js",
+    "static/js/617.b798aedf.chunk.js": "/Samsprintstudio/static/js/617.b798aedf.chunk.js",
+    "static/js/397.b2d6bbce.chunk.js": "/Samsprintstudio/static/js/397.b2d6bbce.chunk.js",
     "index.html": "/Samsprintstudio/index.html",
-    "main.b7f91385.css.map": "/Samsprintstudio/static/css/main.b7f91385.css.map",
-    "main.f2583a83.js.map": "/Samsprintstudio/static/js/main.f2583a83.js.map",
-    "305.05c1d6d5.chunk.js.map": "/Samsprintstudio/static/js/305.05c1d6d5.chunk.js.map",
-    "35.101a755e.chunk.js.map": "/Samsprintstudio/static/js/35.101a755e.chunk.js.map",
-    "995.762f8db2.chunk.js.map": "/Samsprintstudio/static/js/995.762f8db2.chunk.js.map",
-    "659.93893509.chunk.js.map": "/Samsprintstudio/static/js/659.93893509.chunk.js.map",
-    "646.473a49b6.chunk.js.map": "/Samsprintstudio/static/js/646.473a49b6.chunk.js.map"
+    "main.1c31b540.css.map": "/Samsprintstudio/static/css/main.1c31b540.css.map",
+    "main.db0fbf86.js.map": "/Samsprintstudio/static/js/main.db0fbf86.js.map",
+    "827.122f1499.chunk.js.map": "/Samsprintstudio/static/js/827.122f1499.chunk.js.map",
+    "408.72a3543c.chunk.js.map": "/Samsprintstudio/static/js/408.72a3543c.chunk.js.map",
+    "995.45410d3d.chunk.js.map": "/Samsprintstudio/static/js/995.45410d3d.chunk.js.map",
+    "659.e435657c.chunk.js.map": "/Samsprintstudio/static/js/659.e435657c.chunk.js.map",
+    "646.c81a3e0f.chunk.js.map": "/Samsprintstudio/static/js/646.c81a3e0f.chunk.js.map",
+    "617.b798aedf.chunk.js.map": "/Samsprintstudio/static/js/617.b798aedf.chunk.js.map",
+    "397.b2d6bbce.chunk.js.map": "/Samsprintstudio/static/js/397.b2d6bbce.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b7f91385.css",
-    "static/js/main.f2583a83.js"
+    "static/css/main.1c31b540.css",
+    "static/js/main.db0fbf86.js"
   ]
 }
