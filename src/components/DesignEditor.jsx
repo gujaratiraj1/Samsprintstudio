@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2, ArrowRight, X, QrCode } from 'lucide-react';
+import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2, ArrowRight, X, QrCode, CheckCircle } from 'lucide-react';
 import { generateAIImage } from '../services/aiService';
 
 // Design Presets Configuration
@@ -117,10 +117,56 @@ const DESIGN_TEMPLATES = [
             { id: 6, type: 'text', x: 160, y: 110, content: '🌐 www.reallygreatsite.com', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#1B3022' },
             { id: 7, type: 'text', x: 160, y: 140, content: '📍 123 Anywhere St., Any City', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#1B3022' }
         ]
+    },
+    {
+        id: 'charcoal-dynamic',
+        name: 'Charcoal Dynamic',
+        bgColor: '#1a1c1e',
+        front: [
+            { id: 1, type: 'text', x: 30, y: 50, content: 'MARCUS REED', fontSize: 24, fontFamily: 'Montserrat, sans-serif', color: '#ffffff', fontWeight: 'bold' },
+            { id: 2, type: 'text', x: 30, y: 80, content: 'Chief Executive Officer', fontSize: 12, fontFamily: 'Inter, sans-serif', color: '#ff5722' },
+            { id: 3, type: 'text', x: 30, y: 140, content: '📞 +1 (555) 000-1111', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#ffffff' },
+            { id: 4, type: 'text', x: 30, y: 160, content: '✉ marcus@corporate.com', fontSize: 10, fontFamily: 'Inter, sans-serif', color: '#ffffff' },
+            { id: 5, type: 'text', x: 260, y: 80, content: '◆', fontSize: 80, fontFamily: 'Inter, sans-serif', color: '#ff5722', opacity: 0.8 }
+        ],
+        back: [
+            { id: 1, type: 'text', x: 155, y: 80, content: '◆', fontSize: 60, fontFamily: 'Inter, sans-serif', color: '#ff5722' },
+            { id: 2, type: 'text', x: 120, y: 140, content: 'REED INDUSTRIES', fontSize: 16, fontFamily: 'Montserrat, sans-serif', color: '#ffffff', fontWeight: 'bold' }
+        ]
+    },
+    {
+        id: 'blue-tech-wave',
+        name: 'Blue Tech Wave',
+        bgColor: '#ffffff',
+        front: [
+            { id: 1, type: 'text', x: 220, y: -20, content: '●', fontSize: 300, fontFamily: 'Inter, sans-serif', color: '#2563eb', opacity: 0.1 },
+            { id: 2, type: 'text', x: 30, y: 70, content: 'ETHAN HUNT', fontSize: 28, fontFamily: 'Roboto, sans-serif', color: '#1e40af', fontWeight: '900' },
+            { id: 3, type: 'text', x: 30, y: 105, content: 'Software Architect', fontSize: 14, fontFamily: 'Inter, sans-serif', color: '#64748b' },
+            { id: 4, type: 'text', x: 30, y: 150, content: 'www.hunt-tech.io', fontSize: 11, fontFamily: 'Courier New, monospace', color: '#2563eb' }
+        ],
+        back: [
+            { id: 1, type: 'text', x: 0, y: 0, content: '█', fontSize: 800, fontFamily: 'Inter, sans-serif', color: '#2563eb' },
+            { id: 2, type: 'text', x: 130, y: 100, content: 'HT', fontSize: 40, fontFamily: 'Roboto, sans-serif', color: '#ffffff', fontWeight: 'bold' }
+        ]
+    },
+    {
+        id: 'forest-organic',
+        name: 'Forest Organic',
+        bgColor: '#1b3022',
+        front: [
+            { id: 1, type: 'text', x: 30, y: 40, content: '◯', fontSize: 80, fontFamily: 'Inter, sans-serif', color: '#ffffff', opacity: 0.2 },
+            { id: 2, type: 'text', x: 140, y: 70, content: 'Nora Green', fontSize: 26, fontFamily: '"Playfair Display", serif', color: '#dcfce7', fontWeight: 'bold' },
+            { id: 3, type: 'text', x: 140, y: 100, content: 'Sustainability Consultant', fontSize: 12, fontFamily: 'Lato, sans-serif', color: '#86efac' },
+            { id: 4, type: 'text', x: 140, y: 140, content: '🌿 Hello@noragreen.eco', fontSize: 10, fontFamily: 'Lato, sans-serif', color: '#ffffff' },
+            { id: 5, type: 'text', x: 140, y: 160, content: '📍 Portland, Oregon', fontSize: 10, fontFamily: 'Lato, sans-serif', color: '#ffffff' }
+        ],
+        back: [
+            { id: 1, type: 'text', x: 155, y: 90, content: '🌿', fontSize: 50, fontFamily: 'Inter, sans-serif', color: '#86efac' }
+        ]
     }
 ];
 
-const DesignEditor = () => {
+export default function DesignEditor() {
     const navigate = useNavigate();
     const location = useLocation();
     const initialServiceName = location.state?.serviceName || 'Custom Print';
@@ -198,6 +244,44 @@ const DesignEditor = () => {
     };
 
     // --- Actions ---
+
+    // Save/Load Logic
+    const saveProject = () => {
+        const projectData = {
+            activePreset,
+            cardShape,
+            bgColor,
+            pages: {
+                ...pages,
+                [activeSide]: elements
+            },
+            lastModified: new Date().toISOString()
+        };
+        localStorage.setItem('samsprint_design_draft', JSON.stringify(projectData));
+        alert('Design saved successfully!');
+    };
+
+    useEffect(() => {
+        const savedDraft = localStorage.getItem('samsprint_design_draft');
+        if (savedDraft) {
+            const confirmRestore = window.confirm("You have a saved design draft. Would you like to restore it?");
+            if (confirmRestore) {
+                const data = JSON.parse(savedDraft);
+                setActivePreset(data.activePreset || 'visiting-card');
+                setCardShape(data.cardShape || 'rectangle');
+                setBgColor(data.bgColor || '#ffffff');
+                setPages(data.pages);
+                // Load the front side by default or use saved activeSide if needed
+                setElements(data.pages.front);
+                setActiveSide('front');
+                setHistory([data.pages.front]);
+                setHistoryIndex(0);
+            } else {
+                // If user declines, we can clear it or keep it for later. 
+                // Let's keep it for now but maybe provide a way to clear.
+            }
+        }
+    }, []);
 
     const addToHistory = (newElements) => {
         const newHistory = history.slice(0, historyIndex + 1);
@@ -513,22 +597,35 @@ const DesignEditor = () => {
                     <button onClick={() => setZoom(z => Math.min(3, z + 0.1))} className="p-1.5 hover:bg-white rounded shadow-sm"><ZoomIn className="w-4 h-4" /></button>
                 </div>
 
-                {/* Finish Action */}
+                {/* Save & Finish Actions */}
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setShowGrid(!showGrid)}
                         className={`p-2 rounded ${showGrid ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100 text-gray-500'}`}
+                        title="Toggle Alignment Grid"
                     >
                         <Grid className="w-5 h-5" />
                     </button>
+
+                    <div className="h-6 w-[1px] bg-gray-200 mx-1"></div>
+
+                    <button
+                        onClick={saveProject}
+                        className="flex items-center gap-2 px-4 py-2 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg transition"
+                        title="Save Draft Locally"
+                    >
+                        <Save className="w-4 h-4" />
+                        <span className="hidden sm:inline">Save Draft</span>
+                    </button>
+
                     <button
                         className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 shadow-md transition"
                         onClick={() => {
                             const text = `New Order: ${basePreset.name} (${cardShape}).\nFront Elements: ${pages.front.length}\nBack Elements: ${pages.back.length}`;
-                            window.open(`https://wa.me/919999999999?text=${encodeURIComponent(text)}`, '_blank');
+                            window.open(`https://wa.me/919100777511?text=${encodeURIComponent(text)}`, '_blank');
                         }}
                     >
-                        <Save className="w-4 h-4" />
+                        <CheckCircle className="w-4 h-4" />
                         Finish & Order
                     </button>
                 </div>
@@ -1137,4 +1234,4 @@ const DesignEditor = () => {
     );
 };
 
-export default DesignEditor;
+

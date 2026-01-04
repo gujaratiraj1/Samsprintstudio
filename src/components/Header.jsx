@@ -28,11 +28,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition duration-300 ${
-        isScrolled
+      className={`fixed w-full top-0 z-50 transition duration-300 ${isScrolled
           ? 'bg-white shadow-lg'
           : 'bg-gradient-to-r from-white via-green-50 to-white'
-      }`}
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
