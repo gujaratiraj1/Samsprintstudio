@@ -41,12 +41,12 @@ export default function ServicePage({ serviceName }) {
       { id: 6, title: 'Laminated Document', description: 'Print with lamination', color: 'bg-cyan-50' },
     ],
     'photo-printing': [
-      { id: 1, title: 'Passport Photo', description: 'Standard passport size set', color: 'bg-white' },
-      { id: 2, title: '4x6 Glossy', description: 'Classic photo album size', color: 'bg-rose-50' },
-      { id: 3, title: 'A4 Photo Print', description: 'Large portrait print', color: 'bg-pink-50' },
-      { id: 4, title: 'Matte Finish', description: 'Modern non-reflective finish', color: 'bg-stone-50' },
-      { id: 5, title: 'Square Print', description: 'Instagram-style square print', color: 'bg-orange-50' },
-      { id: 6, title: 'Canvas Style', description: 'Artistic photo print', color: 'bg-amber-50' },
+      { id: 1, title: 'Passport Photo', description: 'Standard passport size set', color: 'bg-white', image: '/images/templates/photo-printing/passport-photo.png' },
+      { id: 2, title: '4x6 Glossy', description: 'Classic photo album size', color: 'bg-rose-50', image: '/images/templates/photo-printing/4x6-glossy.png' },
+      { id: 3, title: 'A4 Photo Print', description: 'Large portrait print', color: 'bg-pink-50', image: '/images/templates/photo-printing/a4-photo-print.png' },
+      { id: 4, title: 'Matte Finish', description: 'Modern non-reflective finish', color: 'bg-stone-50', image: '/images/templates/photo-printing/matte-finish.png' },
+      { id: 5, title: 'Square Print', description: 'Instagram-style square print', color: 'bg-orange-50', image: '/images/templates/photo-printing/square-print.png' },
+      { id: 6, title: 'Canvas Style', description: 'Artistic photo print', color: 'bg-amber-50', image: '/images/templates/photo-printing/canvas-style.png' },
     ],
     'fabric-prints': [
       { id: 1, title: 'Custom T-Shirt', description: 'Premium cotton T-shirts with your logo', color: 'bg-blue-50' },

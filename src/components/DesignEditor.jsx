@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, Type, Image as ImageIcon, Download, Save, Trash2, Move, Undo, Redo, Palette, Plus, Grid, ZoomIn, ZoomOut, Layers, AlertCircle, Sparkles, Copy, LayoutTemplate, Wand2, ArrowRight, X, QrCode } from 'lucide-react';
 import { generateAIImage } from '../services/aiService';
 
 // Design Presets Configuration
@@ -159,9 +159,12 @@ const DesignEditor = () => {
     const [showSafeZone, setShowSafeZone] = useState(true);
     const [bgColor, setBgColor] = useState('#ffffff');
     const [isDragging, setIsDragging] = useState(false);
+    const [isResizing, setIsResizing] = useState(false);
+    const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const [isAIModalOpen, setIsAIModalOpen] = useState(false);
     const [aiMode, setAiMode] = useState('layout'); // 'layout' or 'image'
     const [aiPrompt, setAiPrompt] = useState("");
+    const [qrLink, setQrLink] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
@@ -222,6 +225,11 @@ const DesignEditor = () => {
             x: centerX - 50,
             y: centerY - 20,
             rotation: 0,
+            opacity: 1,
+            shadowBlur: 0,
+            shadowColor: 'rgba(0,0,0,0.2)',
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
             zIndex: elements.length + 1,
             ...payload
         };
@@ -235,7 +243,7 @@ const DesignEditor = () => {
             newElement.width = 'auto';
         } else if (type === 'image') {
             newElement.width = 150;
-            newElement.height = 'auto';
+            newElement.height = 100; // Default height for resizing
         }
 
         const newElements = [...elements, newElement];
@@ -374,6 +382,23 @@ const DesignEditor = () => {
         }
     };
 
+    const handleGenerateQR = () => {
+        if (!qrLink.trim()) return;
+
+        // Use api.qrserver.com for instant QR generation
+        // format: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Example
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(qrLink)}`;
+
+        addElement('image', {
+            src: qrUrl,
+            width: 150,
+            height: 150,
+            id: `qr-${Date.now()}` // Special ID prefix for QR codes if needed
+        });
+
+        setQrLink(""); // Clear input after generation
+    };
+
     // --- Mouse / Drag Handlers ---
 
     const handleMouseDown = (e, id) => {
@@ -389,6 +414,21 @@ const DesignEditor = () => {
         }
     };
 
+    const handleResizeStart = (e, id) => {
+        e.stopPropagation();
+        setSelectedId(id);
+        setIsResizing(true);
+        const element = elements.find(el => el.id === id);
+        if (element) {
+            setResizeStart({
+                x: e.clientX,
+                y: e.clientY,
+                width: element.width || 100,
+                height: element.height || 100
+            });
+        }
+    };
+
     const handleMouseMove = (e) => {
         if (isDragging && selectedId) {
             const newX = (e.clientX / zoom) - dragStart.x;
@@ -397,12 +437,24 @@ const DesignEditor = () => {
             setElements(elements.map(el =>
                 el.id === selectedId ? { ...el, x: newX, y: newY } : el
             ));
+        } else if (isResizing && selectedId) {
+            const deltaX = (e.clientX - resizeStart.x) / zoom;
+            const deltaY = (e.clientY - resizeStart.y) / zoom;
+
+            setElements(elements.map(el =>
+                el.id === selectedId ? {
+                    ...el,
+                    width: Math.max(20, resizeStart.width + deltaX),
+                    height: Math.max(20, resizeStart.height + deltaY)
+                } : el
+            ));
         }
     };
 
     const handleMouseUp = () => {
-        if (isDragging) {
+        if (isDragging || isResizing) {
             setIsDragging(false);
+            setIsResizing(false);
             addToHistory(elements);
         }
     };
@@ -504,7 +556,7 @@ const DesignEditor = () => {
                             </div>
 
                             {/* AI Tools */}
-                            <div className="space-y-2 mt-3">
+                            <div className="space-y-2 mt-3 pt-4">
                                 <button
                                     onClick={() => { setAiMode('layout'); setIsAIModalOpen(true); }}
                                     className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] group"
@@ -519,6 +571,33 @@ const DesignEditor = () => {
                                     <Wand2 className="w-4 h-4" />
                                     <span className="text-sm">Generate AI Image</span>
                                 </button>
+                            </div>
+
+                            {/* QR Code Section */}
+                            <div className="mt-6 border-t border-gray-100 pt-6">
+                                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                    <QrCode className="w-3 h-3 text-indigo-500" />
+                                    QR Code Generator
+                                </h3>
+                                <div className="space-y-3">
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            placeholder="Enter link (e.g. google.com)"
+                                            value={qrLink}
+                                            onChange={(e) => setQrLink(e.target.value)}
+                                            className="w-full px-3 py-2.5 text-xs border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none pr-10 bg-gray-50/50"
+                                            onKeyDown={(e) => e.key === 'Enter' && handleGenerateQR()}
+                                        />
+                                        <button
+                                            onClick={handleGenerateQR}
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
+                                        >
+                                            <Plus className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                    <p className="text-[10px] text-gray-400 ml-1">Generate a QR code instantly for any URL.</p>
+                                </div>
                             </div>
                         </section>
 
@@ -567,40 +646,75 @@ const DesignEditor = () => {
 
                             {selectedElement ? (
                                 <div className="space-y-4 animate-slide-up">
-                                    {/* Position */}
-                                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                        <div className="grid grid-cols-2 gap-2">
+                                    {/* Transform Section */}
+                                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-3 block">Transform & Layout</label>
+                                        <div className="grid grid-cols-2 gap-3 mb-4">
                                             <div>
-                                                <label className="text-[10px] text-gray-500">X Position</label>
-                                                <input type="number" value={Math.round(selectedElement.x)} onChange={(e) => handleElementUpdate(selectedElement.id, { x: parseInt(e.target.value) })} className="w-full text-xs p-1 rounded border-gray-200" />
+                                                <label className="text-[10px] text-gray-500 font-medium mb-1 block">X Position</label>
+                                                <input type="number" value={Math.round(selectedElement.x)} onChange={(e) => handleElementUpdate(selectedElement.id, { x: parseInt(e.target.value) })} className="w-full text-xs p-2 rounded-lg border-gray-200 bg-white shadow-sm focus:ring-1 focus:ring-indigo-500 outline-none" />
                                             </div>
                                             <div>
-                                                <label className="text-[10px] text-gray-500">Y Position</label>
-                                                <input type="number" value={Math.round(selectedElement.y)} onChange={(e) => handleElementUpdate(selectedElement.id, { y: parseInt(e.target.value) })} className="w-full text-xs p-1 rounded border-gray-200" />
+                                                <label className="text-[10px] text-gray-500 font-medium mb-1 block">Y Position</label>
+                                                <input type="number" value={Math.round(selectedElement.y)} onChange={(e) => handleElementUpdate(selectedElement.id, { y: parseInt(e.target.value) })} className="w-full text-xs p-2 rounded-lg border-gray-200 bg-white shadow-sm focus:ring-1 focus:ring-indigo-500 outline-none" />
                                             </div>
+                                            <div>
+                                                <label className="text-[10px] text-gray-500 font-medium mb-1 block">Width</label>
+                                                <input type="number" value={Math.round(selectedElement.width) || ''} onChange={(e) => handleElementUpdate(selectedElement.id, { width: parseInt(e.target.value) })} className="w-full text-xs p-2 rounded-lg border-gray-200 bg-white shadow-sm focus:ring-1 focus:ring-indigo-500 outline-none" />
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] text-gray-500 font-medium mb-1 block">Height</label>
+                                                <input type="number" value={Math.round(selectedElement.height) || ''} onChange={(e) => handleElementUpdate(selectedElement.id, { height: parseInt(e.target.value) })} className="w-full text-xs p-2 rounded-lg border-gray-200 bg-white shadow-sm focus:ring-1 focus:ring-indigo-500 outline-none" disabled={selectedElement.type === 'text'} />
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-2">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <label className="text-[10px] text-gray-500 font-medium">Rotation</label>
+                                                <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-1.5 rounded">{selectedElement.rotation || 0}°</span>
+                                            </div>
+                                            <input
+                                                type="range" min="0" max="360"
+                                                value={selectedElement.rotation || 0}
+                                                onChange={(e) => handleElementUpdate(selectedElement.id, { rotation: parseInt(e.target.value) })}
+                                                className="w-full accent-indigo-600 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                            />
                                         </div>
                                     </div>
 
-                                    {/* Text Props */}
+                                    {/* Smart Alignment */}
+                                    <div className="p-3 bg-indigo-50/50 rounded-xl border border-indigo-100 flex gap-2">
+                                        <button
+                                            onClick={() => handleElementUpdate(selectedElement.id, { x: (canvasDims.width - (selectedElement.width || 0)) / 2 })}
+                                            className="flex-1 py-2 bg-white border border-indigo-100 rounded-lg text-[10px] font-bold text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                                        >
+                                            Center X
+                                        </button>
+                                        <button
+                                            onClick={() => handleElementUpdate(selectedElement.id, { y: (canvasDims.height - (selectedElement.height || 0)) / 2 })}
+                                            className="flex-1 py-2 bg-white border border-indigo-100 rounded-lg text-[10px] font-bold text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                                        >
+                                            Center Y
+                                        </button>
+                                    </div>
+
+                                    {/* Typography Props */}
                                     {selectedElement.type === 'text' && (
-                                        <div className="space-y-3">
+                                        <div className="space-y-4">
                                             <div>
-                                                <label className="text-xs font-medium text-gray-600">Content</label>
+                                                <label className="text-xs font-bold text-gray-400 uppercase tracking-tighter mb-2 block">Typography</label>
                                                 <textarea
                                                     value={selectedElement.content}
                                                     onChange={(e) => handleElementUpdate(selectedElement.id, { content: e.target.value })}
-                                                    className="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                                                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-white shadow-sm min-h-[60px]"
                                                     rows={2}
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="text-xs font-medium text-gray-600 block mb-1">Typography</label>
-
-                                                {/* Font Family Selector */}
+                                            <div className="space-y-3">
                                                 <select
                                                     value={selectedElement.fontFamily}
                                                     onChange={(e) => handleElementUpdate(selectedElement.id, { fontFamily: e.target.value })}
-                                                    className="w-full text-xs p-2 mb-2 bg-white border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500"
+                                                    className="w-full text-xs p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm font-medium"
                                                 >
                                                     {FONT_FAMILIES.map(font => (
                                                         <option key={font.name} value={font.value} style={{ fontFamily: font.value }}>
@@ -609,29 +723,72 @@ const DesignEditor = () => {
                                                     ))}
                                                 </select>
 
-                                                <div className="flex gap-2">
-                                                    <input type="number" value={selectedElement.fontSize} onChange={(e) => handleElementUpdate(selectedElement.id, { fontSize: parseInt(e.target.value) })} className="w-16 text-sm p-2 bg-white border border-gray-200 rounded-lg" />
-                                                    <div className="flex-1 flex items-center px-2 bg-white border border-gray-200 rounded-lg">
-                                                        <input type="color" value={selectedElement.color} onChange={(e) => handleElementUpdate(selectedElement.id, { color: e.target.value })} className="w-6 h-6 border-none p-0 cursor-pointer" />
-                                                        <span className="text-xs text-gray-500 ml-2 font-mono uppercase">{selectedElement.color}</span>
+                                                <div className="flex gap-3">
+                                                    <div className="flex-1">
+                                                        <label className="text-[10px] text-gray-500 font-medium mb-1 block">Size</label>
+                                                        <input type="number" value={selectedElement.fontSize} onChange={(e) => handleElementUpdate(selectedElement.id, { fontSize: parseInt(e.target.value) })} className="w-full text-sm p-2.5 bg-white border border-gray-200 rounded-xl shadow-sm outline-none focus:ring-2 focus:ring-indigo-500" />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <label className="text-[10px] text-gray-500 font-medium mb-1 block">Color</label>
+                                                        <div className="flex items-center p-1 bg-white border border-gray-200 rounded-xl shadow-sm h-[42px]">
+                                                            <input type="color" value={selectedElement.color} onChange={(e) => handleElementUpdate(selectedElement.id, { color: e.target.value })} className="w-full h-8 border-none p-0 cursor-pointer rounded-lg overflow-hidden" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
 
-                                    {/* Image Props */}
-                                    {selectedElement.type === 'image' && (
-                                        <div>
-                                            <label className="text-xs font-medium text-gray-600">Width (px)</label>
+                                    {/* Effects Section */}
+                                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-3 block">Appearance & Effects</label>
+
+                                        <div className="mb-4">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <label className="text-[10px] text-gray-500 font-medium">Opacity</label>
+                                                <span className="text-[10px] font-bold text-gray-600">{Math.round((selectedElement.opacity || 1) * 100)}%</span>
+                                            </div>
                                             <input
-                                                type="range" min="50" max="600"
-                                                value={parseInt(selectedElement.width)}
-                                                onChange={(e) => handleElementUpdate(selectedElement.id, { width: parseInt(e.target.value) })}
-                                                className="w-full mt-2 accent-indigo-600"
+                                                type="range" min="0" max="1" step="0.01"
+                                                value={selectedElement.opacity || 1}
+                                                onChange={(e) => handleElementUpdate(selectedElement.id, { opacity: parseFloat(e.target.value) })}
+                                                className="w-full accent-indigo-600 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                                             />
                                         </div>
-                                    )}
+
+                                        <div>
+                                            <div className="flex justify-between items-center mb-1">
+                                                <label className="text-[10px] text-gray-500 font-medium">Shadow Softness</label>
+                                                <span className="text-[10px] font-bold text-gray-600">{selectedElement.shadowBlur || 0}px</span>
+                                            </div>
+                                            <input
+                                                type="range" min="0" max="40"
+                                                value={selectedElement.shadowBlur || 0}
+                                                onChange={(e) => handleElementUpdate(selectedElement.id, {
+                                                    shadowBlur: parseInt(e.target.value),
+                                                    shadowOffsetX: parseInt(e.target.value) / 2,
+                                                    shadowOffsetY: parseInt(e.target.value) / 2
+                                                })}
+                                                className="w-full accent-indigo-600 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Layer Order Controls */}
+                                    <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
+                                        <button
+                                            onClick={() => handleElementUpdate(selectedElement.id, { zIndex: elements.length + 10 })}
+                                            className="flex-1 p-2 hover:bg-white rounded-md transition text-[10px] font-bold text-gray-600 flex items-center justify-center gap-2"
+                                        >
+                                            <Layers size={12} /> Bring Front
+                                        </button>
+                                        <button
+                                            onClick={() => handleElementUpdate(selectedElement.id, { zIndex: 0 })}
+                                            className="flex-1 p-2 hover:bg-white rounded-md transition text-[10px] font-bold text-gray-600 flex items-center justify-center gap-2"
+                                        >
+                                            <Layers size={12} className="rotate-180" /> Send Back
+                                        </button>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="space-y-4">
@@ -722,11 +879,9 @@ const DesignEditor = () => {
                                     <div
                                         key={el.id}
                                         onMouseDown={(e) => handleMouseDown(e, el.id)}
-                                        // Handle Double Click for Text Editing
                                         onDoubleClick={(e) => {
                                             e.stopPropagation();
                                             if (el.type === 'text') {
-                                                // Simple prompt for quick editing, or we could focus sidebar
                                                 const newText = window.prompt("Edit Text:", el.content);
                                                 if (newText !== null) handleElementUpdate(el.id, { content: newText });
                                             }
@@ -735,15 +890,29 @@ const DesignEditor = () => {
                                         style={{
                                             left: el.x,
                                             top: el.y,
-                                            width: el.type === 'image' ? el.width : 'auto',
+                                            width: el.width || 'auto',
+                                            height: el.height || 'auto',
                                             zIndex: el.zIndex,
+                                            transform: `rotate(${el.rotation || 0}deg)`,
+                                            opacity: el.opacity !== undefined ? el.opacity : 1,
+                                            filter: (el.shadowBlur || el.shadowOffsetX || el.shadowOffsetY) ?
+                                                `drop-shadow(${el.shadowOffsetX || 0}px ${el.shadowOffsetY || 0}px ${el.shadowBlur || 0}px ${el.shadowColor || 'rgba(0,0,0,0.2)'})` :
+                                                'none'
                                         }}
                                     >
+                                        {/* Resize Handles */}
+                                        {selectedId === el.id && (
+                                            <div
+                                                className="absolute -bottom-1 -right-1 w-3 h-3 bg-white border-2 border-indigo-600 rounded-full cursor-nwse-resize z-[70] shadow-sm hover:scale-125 transition-transform"
+                                                onMouseDown={(e) => handleResizeStart(e, el.id)}
+                                            />
+                                        )}
+
                                         {/* Selecting Element Toolbar */}
                                         {selectedId === el.id && (
                                             <div
                                                 className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-white shadow-lg border border-gray-200 rounded-lg flex items-center p-1 gap-1 z-[60] whitespace-nowrap"
-                                                onMouseDown={(e) => e.stopPropagation()} // Prevent drag when clicking toolbar
+                                                onMouseDown={(e) => e.stopPropagation()}
                                             >
                                                 <button
                                                     className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-indigo-600"
@@ -759,6 +928,16 @@ const DesignEditor = () => {
                                                     {el.type === 'text' ? <Type size={14} /> : <ImageIcon size={14} />}
                                                 </button>
                                                 <div className="w-px h-4 bg-gray-200 mx-0.5"></div>
+                                                <button
+                                                    className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
+                                                    title="Send to Back"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleElementUpdate(el.id, { zIndex: Math.min(...elements.map(e => e.zIndex)) - 1 });
+                                                    }}
+                                                >
+                                                    <Layers size={14} className="rotate-180" />
+                                                </button>
                                                 <button
                                                     className="p-1.5 hover:bg-gray-100 rounded text-gray-600"
                                                     title="Bring to Front"
@@ -798,18 +977,19 @@ const DesignEditor = () => {
 
                                         {el.type === 'text' ? (
                                             <div
-                                                className={`px-2 py-1 leading-none whitespace-nowrap border-2 ${selectedId === el.id ? 'border-indigo-500' : 'border-transparent hover:border-indigo-200 dashed'}`}
+                                                className={`px-2 py-1 leading-none whitespace-nowrap w-full h-full border-2 flex items-center justify-center ${selectedId === el.id ? 'border-indigo-500' : 'border-transparent hover:border-indigo-200 italic'}`}
                                                 style={{
                                                     color: el.color,
                                                     fontSize: el.fontSize,
-                                                    fontFamily: el.fontFamily
+                                                    fontFamily: el.fontFamily,
+                                                    fontWeight: el.fontWeight || 'normal'
                                                 }}
                                             >
                                                 {el.content}
                                             </div>
                                         ) : (
-                                            <div className={`relative ${selectedId === el.id ? 'ring-2 ring-indigo-500' : ''}`}>
-                                                <img src={el.src} alt="" className="w-full h-auto block pointer-events-none" />
+                                            <div className={`relative w-full h-full overflow-hidden ${selectedId === el.id ? 'ring-2 ring-indigo-500' : ''}`}>
+                                                <img src={el.src} alt="" className="w-full h-full object-contain block pointer-events-none" />
                                             </div>
                                         )}
                                     </div>
